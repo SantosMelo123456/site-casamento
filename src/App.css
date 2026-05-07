@@ -68,25 +68,28 @@
 }
 
 .duo-grid {
-  width: min(1120px, 100% - 28px);
-  margin: 22px auto 40px;
+  width: min(860px, 100% - 28px);
+  margin: 32px auto 48px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 18px;
 }
 
 .duo-card {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   border-radius: 8px;
-  min-height: 300px;
+  aspect-ratio: 4 / 3;
 }
 
 .duo-card img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
   filter: brightness(0.82);
 }
 
@@ -102,9 +105,371 @@
   color: #f4f4f4;
   text-align: center;
   text-decoration: none;
-}
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.guest-register {
+  width: 100vw;
+  margin: 0 calc(50% - 50vw) 48px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.guest-register-hero {
+  position: relative;
+  min-height: 560px;
+  overflow: hidden;
+}
+
+.guest-register-hero img {
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+  display: block;
+  object-fit: cover;
+  filter: brightness(0.72);
+}
+
+.guest-register-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(440px, 82%);
+  transform: translate(-50%, -50%);
+  color: #f6f1e8;
+  text-align: center;
+}
+
+.guest-register-content h2 {
+  margin: 0 0 16px;
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.guest-register-content p {
+  margin: 0 auto 24px;
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+.guest-register-content button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(410px, 100%);
+  min-height: 54px;
+  border: 0;
+  border-radius: 999px;
+  background: #978f7d;
+  color: #f8f4ec;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.registration-screen {
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 32px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(rgba(18, 18, 18, 0.48), rgba(18, 18, 18, 0.48)),
+    url('./assets/registro-convidado.jpg') center / cover;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.registration-back {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  min-height: 42px;
+  padding: 0 22px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.registration-panel {
+  width: min(980px, 100%);
+  padding: 42px 38px;
+  background: rgba(222, 216, 200, 0.94);
+  color: #171717;
+  text-align: center;
+}
+
+.registration-monogram {
+  margin: 0 0 16px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.registration-panel h1 {
+  margin: 0 0 14px;
+  font-size: 32px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.registration-panel > p:not(.registration-monogram) {
+  margin: 0 auto 28px;
+  max-width: 410px;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.registration-form {
+  display: grid;
+  gap: 16px;
+  text-align: left;
+}
+
+.registration-form label {
+  display: grid;
+  gap: 7px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.registration-form input,
+.registration-form select,
+.registration-form textarea {
+  width: 100%;
+  border: 1px solid rgba(23, 23, 23, 0.22);
+  border-radius: 6px;
+  padding: 13px 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #171717;
+  font: 16px 'Times New Roman', Times, serif;
+}
+
+.registration-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.registration-form button {
+  min-height: 52px;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: #978f7d;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.registration-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.form-feedback {
+  margin: 4px 0 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 17px;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: none;
+}
+
+.form-feedback.is-success {
+  color: #36563a;
+}
+
+.form-feedback.is-error {
+  color: #8a2d2d;
+}
+
+.gift-selection {
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.gift-selection legend {
+  margin: 0 0 8px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.gift-selection > p {
+  margin: 0 0 18px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: none;
+}
+
+.gift-feedback {
+  margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 17px;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: none;
+}
+
+.gift-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.gift-card {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 126px;
+  padding: 10px;
+  border: 1px solid rgba(23, 23, 23, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.gift-card.is-selected {
+  border-color: #7c735f;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.gift-card.is-reserved {
+  opacity: 0.72;
+}
+
+.gift-image {
+  position: relative;
+  min-height: 106px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f3efea;
+}
+
+.gift-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.gift-image button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 26px;
+  min-height: 26px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(23, 23, 23, 0.32);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  color: #171717;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.gift-image button:disabled {
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.gift-card.is-selected .gift-image button {
+  background: #7c735f;
+  color: #ffffff;
+}
+
+.gift-info {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.gift-info h2 {
+  margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+.gift-info a {
+  width: fit-content;
+  color: #4f473a;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.gift-info p {
+  margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 17px;
+  line-height: 1;
+  text-transform: none;
+}
+
+.gift-status {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.guest-register-footer {
+  padding: 20px 16px 24px;
+  background: #ded8c8;
+  color: #171717;
+  text-align: center;
+}
+
+.guest-register-footer p {
+  margin: 0 0 12px;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.guest-register-footer a {
+  color: #171717;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
 
 
 @media (max-width: 900px) {
@@ -127,16 +492,54 @@
   }
 
   .duo-grid {
-    width: min(1120px, 100% - 18px);
-    grid-template-columns: 1fr;
+    width: min(680px, 100% - 18px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
   .duo-card {
-    min-height: 300px;
+    aspect-ratio: 4 / 3;
   }
 
-  .duo-card h2 {
-    font-size: 30px;
+  .duo-card a {
+    font-size: 24px;
+  }
+
+  .guest-register-hero,
+  .guest-register-hero img {
+    min-height: 430px;
+  }
+
+  .guest-register-content h2 {
+    font-size: 22px;
+  }
+
+  .guest-register-content p {
+    font-size: 16px;
+  }
+
+  .guest-register-content button {
+    min-height: 48px;
+  }
+
+  .registration-screen {
+    align-items: flex-start;
+    padding-top: 86px;
+  }
+
+  .registration-panel {
+    padding: 34px 22px;
+  }
+
+  .registration-panel h1 {
+    font-size: 26px;
+  }
+
+  .gift-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gift-card {
+    grid-template-columns: 120px minmax(0, 1fr);
   }
 }
