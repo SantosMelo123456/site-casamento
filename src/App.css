@@ -109,6 +109,84 @@
   letter-spacing: 1px;
 }
 
+.faq-section {
+  width: 100vw;
+  margin: 0 calc(50% - 50vw) 48px;
+  padding: 56px 18px 64px;
+  background: #ded8c8;
+  color: #171717;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.faq-heading {
+  width: min(760px, 100%);
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.faq-heading p {
+  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.faq-heading h2 {
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.faq-heading span {
+  display: block;
+  width: min(520px, 100%);
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.faq-grid {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.faq-card {
+  min-height: 230px;
+  padding: 24px 22px;
+  border: 1px solid rgba(23, 23, 23, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.faq-card span {
+  display: block;
+  margin: 0 0 22px;
+  color: #7c735f;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.faq-card h3 {
+  margin: 0 0 12px;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.faq-card p {
+  margin: 0;
+  color: #2e2b25;
+  font-size: 17px;
+  line-height: 1.38;
+}
+
 .guest-register {
   width: 100vw;
   margin: 0 calc(50% - 50vw) 48px;
@@ -503,6 +581,44 @@
 
   .duo-card a {
     font-size: 24px;
+  }
+
+  .faq-section {
+    padding: 44px 14px 48px;
+  }
+
+  .faq-heading {
+    margin-bottom: 24px;
+  }
+
+  .faq-heading h2 {
+    font-size: 26px;
+  }
+
+  .faq-heading span {
+    font-size: 16px;
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .faq-card {
+    min-height: auto;
+    padding: 22px 18px;
+  }
+
+  .faq-card span {
+    margin-bottom: 14px;
+  }
+
+  .faq-card h3 {
+    font-size: 21px;
+  }
+
+  .faq-card p {
+    font-size: 16px;
   }
 
   .guest-register-hero,

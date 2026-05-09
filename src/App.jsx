@@ -445,12 +445,76 @@ function App() {
         </article>
         <article className="duo-card">
           <img src={previewBottomImage} alt="Painel de duvidas" />
-          <a href="#nossa-historia">Nossa história</a>
+          <a href="#duvidas">Painel de Duvidas</a>
         </article>
         <article className="duo-card">
           <img src={gridFourImage} alt="Fotos do casal" />
           <a href="#localizacao">Localização</a>
         </article>
+      </section>
+
+      <section className="faq-section" id="duvidas">
+        <div className="faq-heading">
+          <p>J&amp;J</p>
+          <h2>Painel de Duvidas</h2>
+          <span>
+            Reunimos aqui as principais informacoes para voce chegar tranquilo
+            e aproveitar cada momento da celebracao.
+          </span>
+        </div>
+
+        <div className="faq-grid">
+          <article className="faq-card">
+            <span>01</span>
+            <h3>Qual sera o horario?</h3>
+            <p>
+              A cerimonia esta marcada para as 16h. Sugerimos chegar com alguns
+              minutos de antecedencia para encontrar seu lugar com calma.
+            </p>
+          </article>
+          <article className="faq-card">
+            <span>02</span>
+            <h3>Onde sera o casamento?</h3>
+            <p>
+              A celebracao acontecera no The Golden Elm Manor, em St.
+              Augustine, Salvador. Em breve adicionaremos o mapa com a rota.
+            </p>
+          </article>
+          <article className="faq-card">
+            <span>03</span>
+            <h3>Qual traje devo usar?</h3>
+            <p>
+              O traje sugerido e social elegante. Escolha roupas confortaveis
+              para circular entre a cerimonia, as fotos e a festa.
+            </p>
+          </article>
+          <article className="faq-card">
+            <span>04</span>
+            <h3>Posso levar acompanhante?</h3>
+            <p>
+              Sim, se o acompanhante estiver indicado no seu convite. No
+              registro de convidado voce pode informar o nome de quem ira com
+              voce.
+            </p>
+          </article>
+          <article className="faq-card">
+            <span>05</span>
+            <h3>Como confirmo presenca?</h3>
+            <p>
+              Use a area de Registro Convidado no site para confirmar sua
+              presenca, informar restricoes e deixar uma mensagem para os
+              noivos.
+            </p>
+          </article>
+          <article className="faq-card">
+            <span>06</span>
+            <h3>Como funciona a lista de presentes?</h3>
+            <p>
+              A lista fica dentro do registro. Voce pode escolher um ou mais
+              presentes disponiveis e o site reserva sua selecao.
+            </p>
+          </article>
+        </div>
       </section>
 
       <section className="guest-register" id="registro-convidado">
