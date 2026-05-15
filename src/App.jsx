@@ -5,6 +5,7 @@ import './App.css'
 import previewImage from './assets/preview.webp'
 import downloadImage from './assets/download.webp'
 import downloadImage1 from './assets/download-1.webp'
+import venueImage from './assets/download (3).webp'
 import previewBottomImage from './assets/preview-bottom.png'
 import gridFourImage from './assets/grid-four.png'
 import registroConvidadoImage from './assets/registro-convidado.jpg'
@@ -444,8 +445,8 @@ function App() {
           <a href="#o-que-levar">O que levar</a>
         </article>
         <article className="duo-card">
-          <img src={previewBottomImage} alt="Painel de duvidas" />
-          <a href="#duvidas">Painel de Duvidas</a>
+          <img src={previewBottomImage} alt="Nossa historia" />
+          <a href="#nossa-historia">Nossa história</a>
         </article>
         <article className="duo-card">
           <img src={gridFourImage} alt="Fotos do casal" />
@@ -458,62 +459,81 @@ function App() {
           <p>J&amp;J</p>
           <h2>Painel de Duvidas</h2>
           <span>
-            Reunimos aqui as principais informacoes para voce chegar tranquilo
-            e aproveitar cada momento da celebracao.
+            Reunimos aqui as principais informacoes para voce chegar tranquilo,
+            encontrar o local e aproveitar cada momento da celebracao.
           </span>
         </div>
 
-        <div className="faq-grid">
-          <article className="faq-card">
-            <span>01</span>
-            <h3>Qual sera o horario?</h3>
-            <p>
-              A cerimonia esta marcada para as 16h. Sugerimos chegar com alguns
-              minutos de antecedencia para encontrar seu lugar com calma.
-            </p>
-          </article>
-          <article className="faq-card">
-            <span>02</span>
-            <h3>Onde sera o casamento?</h3>
-            <p>
-              A celebracao acontecera no The Golden Elm Manor, em St.
-              Augustine, Salvador. Em breve adicionaremos o mapa com a rota.
-            </p>
-          </article>
-          <article className="faq-card">
-            <span>03</span>
-            <h3>Qual traje devo usar?</h3>
-            <p>
-              O traje sugerido e social elegante. Escolha roupas confortaveis
-              para circular entre a cerimonia, as fotos e a festa.
-            </p>
-          </article>
-          <article className="faq-card">
-            <span>04</span>
-            <h3>Posso levar acompanhante?</h3>
-            <p>
-              Sim, se o acompanhante estiver indicado no seu convite. No
-              registro de convidado voce pode informar o nome de quem ira com
-              voce.
-            </p>
-          </article>
-          <article className="faq-card">
-            <span>05</span>
-            <h3>Como confirmo presenca?</h3>
-            <p>
-              Use a area de Registro Convidado no site para confirmar sua
-              presenca, informar restricoes e deixar uma mensagem para os
-              noivos.
-            </p>
-          </article>
-          <article className="faq-card">
-            <span>06</span>
-            <h3>Como funciona a lista de presentes?</h3>
-            <p>
-              A lista fica dentro do registro. Voce pode escolher um ou mais
-              presentes disponiveis e o site reserva sua selecao.
-            </p>
-          </article>
+        <div className="faq-layout">
+          <div className="faq-location">
+            <div className="faq-location-main">
+              <img src={venueImage} alt="Entrada do local do casamento" />
+            </div>
+            <div className="faq-location-gallery">
+              <img src={gridFourImage} alt="Area externa do local" />
+              <img src={previewBottomImage} alt="Espaco decorado do casamento" />
+            </div>
+            <div className="faq-address">
+              <p>Local da cerimonia</p>
+              <h3>Villa Jardim Aurora</h3>
+              <span>
+                Rua das Acacias, 248 - Jardim das Flores, Salvador - BA
+              </span>
+            </div>
+          </div>
+
+          <div className="faq-grid">
+            <article className="faq-card">
+              <span>01</span>
+              <h3>Qual sera o horario?</h3>
+              <p>
+                A cerimonia esta marcada para as 16h. Sugerimos chegar com
+                alguns minutos de antecedencia para encontrar seu lugar com
+                calma.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>02</span>
+              <h3>Como chego ao local?</h3>
+              <p>
+                O endereco acima e uma localizacao ficticia para o projeto. A
+                referencia principal e a Villa Jardim Aurora, proxima a Praca
+                das Flores.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>03</span>
+              <h3>Qual traje devo usar?</h3>
+              <p>
+                O traje sugerido e social elegante. Escolha roupas confortaveis
+                para circular entre a cerimonia, as fotos e a festa.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>04</span>
+              <h3>Posso levar acompanhante?</h3>
+              <p>
+                Sim, se o acompanhante estiver indicado no seu convite. No
+                registro de convidado voce informa o nome de quem ira com voce.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>05</span>
+              <h3>Como confirmo presenca?</h3>
+              <p>
+                Use a area de Registro Convidado para confirmar sua presenca,
+                informar restricoes e deixar uma mensagem para os noivos.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>06</span>
+              <h3>Como funciona a lista de presentes?</h3>
+              <p>
+                A lista fica dentro do registro. Voce escolhe um ou mais
+                presentes disponiveis e o site reserva sua selecao.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
 
