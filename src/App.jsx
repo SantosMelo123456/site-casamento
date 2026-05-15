@@ -435,24 +435,102 @@ function App() {
         </div>
       </section>
 
-      <section className="duo-grid" id="sobre">
-        <article className="duo-card">
-          <img src={downloadImage} alt="Nossa historia" />
-          <a href="#nossa-historia">Fotos do Casal</a>
-        </article>
-        <article className="duo-card">
-          <img src={downloadImage1} alt="Sobre o casamento" />
-          <a href="#o-que-levar">O que levar</a>
-        </article>
-        <article className="duo-card">
-          <img src={previewBottomImage} alt="Nossa historia" />
-          <a href="#nossa-historia">Nossa história</a>
-        </article>
-        <article className="duo-card">
-          <img src={gridFourImage} alt="Fotos do casal" />
-          <a href="#localizacao">Localização</a>
-        </article>
-      </section>
+     {/* Grid de navegação */}
+<section className="duo-grid" id="sobre">
+  <article className="duo-card">
+    <img src={downloadImage} alt="Nossa historia" />
+    <a href="#nossa-historia">Fotos do Casal</a>
+  </article>
+  <article className="duo-card">
+    <img src={downloadImage1} alt="Sobre o casamento" />
+    <a href="#o-que-levar">O que levar</a>
+  </article>
+  <article className="duo-card">
+    <img src={previewBottomImage} alt="Nossa historia" />
+    <a href="#nossa-historia">Nossa história</a>
+  </article>
+  <article className="duo-card">
+    <img src={gridFourImage} alt="Fotos do casal" />
+    <a href="#localizacao">Localização</a>
+  </article>
+</section>
+
+<section className="history-section" id="nossa-historia">
+  <section className="header-section">
+    <img src="/foto1.jpeg" alt="Foto do casal" className="hero-image" />
+    <div className="header-content">
+      <h1>Where the Wild Things Wed</h1>
+      <p>
+              Nós nos conhecemos em uma caminhada artística em Seattle, literalmente esbarrando um no outro. Começamos a fazer trilhas juntos — muitas trilhas. Nós dois amamos o noroeste do Pacífico, as montanhas, a costa, tudo. Estávamos sempre por aí, nas trilhas, apenas curtindo, conversando ao redor de uma fogueira. Simplesmente encaixou. Estávamos na mesma sintonia.
+      Uma vez, estávamos fazendo trilha e eu reclamei das minhas botas, e a Grace simplesmente parou e começou a amarrar meus cadarços para mim. Foi aí que eu soube. Não foi um grande gesto. Foi só… a gente.
+      </p>
+      <p>
+       Construímos uma vida juntos. É tranquila, é de verdade. Gostamos de aventuras simples, mas também apreciamos um bom vinho com amigos. Desde aquelas primeiras trilhas até aprender a viver juntos sob incontáveis céus estrelados, sempre encontramos nossos melhores momentos na natureza.
+      </p>
+    </div>
+  </section>
+  <main className="main-section">
+    <div className="timeline-block">
+      <img src="/foto2.png" alt="Quando nos conhecemos" className="timeline-image" />
+      <div className="timeline-text">
+         <p>
+          Parece certo celebrar cercados pelas pessoas que nos entendem. Estamos animados para começar este próximo capítulo com vocês.
+          </p>
+          <p>
+          Em frente e para o alto, rumo à próxima aventura!
+        </p>
+        <h2>Quando nos conhecemos - 20/01/2007</h2>
+       
+      </div>
+    </div>
+
+    <div className="timeline-block reverse">
+      <img src="/foto3.jpeg" alt="Campamento Jovens" className="timeline-image" />
+      <div className="timeline-text">
+        <h2>Campamento Jovens - 02/2017</h2>
+      </div>
+    </div>
+
+    <div className="timeline-block">
+      <img src="/foto4.jpeg" alt="1 ano juntos" className="timeline-image" />
+      <div className="timeline-text">
+        <h2>1 Ano Juntos - 2018</h2>
+      </div>
+    </div>
+
+    <div className="timeline-block reverse">
+      <img src="/foto5.png" alt="2º ano de namoro" className="timeline-image" />
+      <div className="timeline-text">
+        <h2>2º Ano de Namoro - 2018</h2>
+      </div>
+    </div>
+
+    <div className="timeline-block">
+      <img src="/foto6.png" alt="Pedido de casamento" className="timeline-image" />
+      <div className="timeline-text">
+        <h2>Pedido de Casamento - 12/06/2020</h2>
+      </div>
+    </div>
+
+    <div className="timeline-block reverse">
+      <img src="/foto9.png" alt="Preparativos casamento" className="timeline-image" />
+      <div className="timeline-text">
+        <h2>1º Ano de Noivado - 2020</h2>
+      </div>
+    </div>
+
+    <div className="timeline-block">
+      <img src="/foto10.png" alt="Preparativos casamento" className="timeline-image" />
+      <div className="timeline-text">
+        <h2>Preparativos Casamento</h2>
+      </div>
+    </div>
+  </main>
+  <div className="guest-register-footer">
+          <p>J&amp;J</p>
+          <a href="#home">SATURDAY, SEPTEMBER 20,2025</a>
+    </div>
+</section>
 
       <section className="faq-section" id="duvidas">
         <div className="faq-heading">
@@ -560,7 +638,9 @@ function App() {
         </div>
       </section>
     </>
-  )
-}
 
+    
+  )
+  
+}
 export default App
