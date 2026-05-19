@@ -530,8 +530,76 @@ function App() {
           <p>J&amp;J</p>
           <a href="#home">SATURDAY, SEPTEMBER 20,2025</a>
     </div>
-</section>
+</section><section className="packing-section" id="o-que-levar">
+  <div className="packing-heading">
+    <p>J&amp;J</p>
+    <h2>O que levar</h2>
+    <span>
+      Preparamos uma lista simples para voce chegar tranquilo e aproveitar
+      cada momento da celebracao com a gente.
+    </span>
+  </div>
 
+  <div className="packing-note">
+    <p>Dica dos noivos</p>
+    <h3>Leve o essencial e venha leve</h3>
+    <span>
+      O clima pode variar ao longo do dia. Um casaco leve e um sapato
+      confortavel fazem toda a diferenca entre a cerimonia e a festa.
+    </span>
+  </div>
+
+  <div className="packing-grid">
+    <article className="packing-card">
+      <span>01</span>
+      <h3>Convite ou confirmacao</h3>
+      <p>
+        Tenha em maos o convite ou a confirmacao do registro. Isso ajuda
+        na organizacao da recepcao e do seu lugar na mesa.
+      </p>
+    </article>
+    <article className="packing-card">
+      <span>02</span>
+      <h3>Traje social elegante</h3>
+      <p>
+        Sugerimos look social elegante, com roupas confortaveis para
+        circular entre cerimonia, fotos e festa.
+      </p>
+    </article>
+    <article className="packing-card">
+      <span>03</span>
+      <h3>Calcado confortavel</h3>
+      <p>
+        Se possivel, leve um par extra ou um sapato mais confortavel para
+        usar depois da cerimonia.
+      </p>
+    </article>
+    <article className="packing-card">
+      <span>04</span>
+      <h3>Casaco ou xale leve</h3>
+      <p>
+        A noite pode esfriar no jardim. Um casaco, xale ou estola combina
+        com o clima e com as fotos.
+      </p>
+    </article>
+    <article className="packing-card">
+      <span>05</span>
+      <h3>Protetor solar e acessorios</h3>
+      <p>
+        Parte da celebracao acontece ao ar livre. Protetor solar, oculos
+        e um lenco sao bem-vindos.
+      </p>
+    </article>
+    <article className="packing-card">
+      <span>06</span>
+      <h3>Presente ou reserva online</h3>
+      <p>
+        Voce pode reservar presentes pelo Registro Convidado no site. Se
+        preferir levar algo pessoal, sera recebido com muito carinho.
+      </p>
+    </article>
+  </div>
+</section>
       <section className="faq-section" id="duvidas">
         <div className="faq-heading">
           <p>J&amp;J</p>
@@ -551,7 +619,7 @@ function App() {
               <img src={gridFourImage} alt="Area externa do local" />
               <img src={previewBottomImage} alt="Espaco decorado do casamento" />
             </div>
-            <div className="faq-address">
+            <div className="faq-address" id="localizacao">
               <p>Local da cerimonia</p>
               <h3>Villa Jardim Aurora</h3>
               <span>
