@@ -24,6 +24,10 @@ import {
   listGifts,
   submitGuestRegistration,
 } from './services/guestRegistry'
+import {
+  enableSmoothAnchorNavigation,
+  smoothScrollToTop,
+} from './utils/smoothScroll'
 
 const localGiftCatalog = [
   {
@@ -119,6 +123,13 @@ function App() {
       ...gift,
       image: giftImageById[gift.id],
     }))
+
+  const navigateToScreen = (screen) => {
+    setCurrentScreen(screen)
+    smoothScrollToTop()
+  }
+
+  useEffect(() => enableSmoothAnchorNavigation(), [])
 
   useEffect(() => {
     let isMounted = true
@@ -247,13 +258,13 @@ function App() {
         <button
           className="registration-back"
           type="button"
-          onClick={() => setCurrentScreen('home')}
+          onClick={() => navigateToScreen('home')}
         >
           Voltar
         </button>
 
         <section className="registration-panel">
-          <p className="registration-monogram">J&amp;J</p>
+          <p className="registration-monogram">L&amp;G</p>
           <h1>Registro Convidado</h1>
           <p>
             Confirme sua presenca e conte pra gente quem vem celebrar esse dia
@@ -422,16 +433,16 @@ function App() {
           <div className="hero-brand">Lucas & Gladys</div>
           <nav className="hero-nav" aria-label="Navegacao principal">
             <a href="#home">Home</a>
-            <a href="#sobre">Sobre o Casamento</a>
-            <a href="#sobre">Nossa Historia</a>
+            <a href="#sobre-casamento">Sobre o Casamento</a>
+            <a href="#nossa-historia">Nossa Historia</a>
             <a href="#duvidas">Painel de Duvidas</a>
           </nav>
         </header>
 
         <div className="hero-center-text">
           <p>Sabado, 30 de junho, 2026</p>
-          <p>The Golden Elm Manor,</p>
-          <p>St. Augustine, Salvador</p>
+          <p>Villa Jardim Aurora</p>
+          <p>Salvador, Bahia</p>
         </div>
       </section>
 
@@ -443,16 +454,161 @@ function App() {
   </article>
   <article className="duo-card">
     <img src={downloadImage1} alt="Sobre o casamento" />
+    <a href="#sobre-casamento">Sobre o Casamento</a>
+  </article>
+  <article className="duo-card">
+    <img src={venueImage} alt="O que levar" />
     <a href="#o-que-levar">O que levar</a>
   </article>
   <article className="duo-card">
     <img src={previewBottomImage} alt="Nossa historia" />
     <a href="#nossa-historia">Nossa história</a>
   </article>
-  <article className="duo-card">
-    <img src={gridFourImage} alt="Fotos do casal" />
-    <a href="#localizacao">Localização</a>
-  </article>
+</section>
+
+<section className="wedding-section" id="sobre-casamento">
+  <div className="wedding-heading">
+    <p>L&amp;G</p>
+    <h2>Sobre o Casamento</h2>
+    <span>
+      Tudo o que voce precisa saber para celebrar conosco: data, horarios,
+      local e o clima do nosso grande dia.
+    </span>
+  </div>
+
+  <div className="wedding-intro">
+    <img src={downloadImage1} alt="Detalhes da celebracao" />
+    <div className="wedding-intro-text">
+      <h3>Uma tarde para lembrar</h3>
+      <p>
+        Lucas e Gladys convidam voce para uma celebracao intima ao ar livre,
+        cercada de jardim, musica ao vivo e a presenca de quem faz parte da
+        nossa historia. A cerimonia e a festa acontecem no mesmo endereco, para
+        que voce possa aproveitar cada momento sem pressa.
+      </p>
+      <p>
+        Sabado, 30 de junho de 2026, a partir das 16h, na Villa Jardim Aurora,
+        em Salvador. Confirmamos presenca e lista de presentes pelo Registro
+        Convidado aqui no site.
+      </p>
+    </div>
+  </div>
+
+  <div className="wedding-details-grid">
+    <article className="wedding-detail-card">
+      <span>Data</span>
+      <h3>Sabado, 30 de junho de 2026</h3>
+      <p>Cerimonia ao entardecer, com recepcao em seguida no mesmo local.</p>
+    </article>
+    <article className="wedding-detail-card">
+      <span>Horario</span>
+      <h3>Cerimonia as 16h</h3>
+      <p>Chegue entre 15h30 e 15h45 para acomodacao tranquila dos convidados.</p>
+    </article>
+    <article className="wedding-detail-card">
+      <span>Local</span>
+      <h3>Villa Jardim Aurora</h3>
+      <p>
+        Rua das Acacias, 248 - Jardim das Flores, Salvador - BA. Estacionamento
+        no proprio espaco.
+      </p>
+    </article>
+    <article className="wedding-detail-card">
+      <span>Traje</span>
+      <h3>Social elegante</h3>
+      <p>
+        Tons claros e terrosos combinam com o jardim. Evite saltos finos em
+        areas de grama.
+      </p>
+    </article>
+  </div>
+
+  <div className="wedding-schedule">
+    <h3>Cronograma do dia</h3>
+    <ol className="wedding-schedule-list">
+      <li>
+        <strong>15h30</strong>
+        <span>Recepcao dos convidados no jardim</span>
+      </li>
+      <li>
+        <strong>16h00</strong>
+        <span>Cerimonia ao ar livre</span>
+      </li>
+      <li>
+        <strong>17h00</strong>
+        <span>Cocktail e sessao de fotos</span>
+      </li>
+      <li>
+        <strong>19h30</strong>
+        <span>Jantar e festa</span>
+      </li>
+      <li>
+        <strong>23h30</strong>
+        <span>Encerramento</span>
+      </li>
+    </ol>
+  </div>
+
+  <div className="wedding-cta">
+    <a href="#registro-convidado">Confirmar presenca</a>
+    <a href="#duvidas">Ver painel de duvidas</a>
+  </div>
+</section>
+
+<section className="packing-section" id="o-que-levar">
+  <div className="packing-heading">
+    <p>L&amp;G</p>
+    <h2>O que levar</h2>
+    <span>
+      Preparamos esta lista para voce chegar preparado e aproveitar a festa com
+      tranquilidade.
+    </span>
+  </div>
+
+  <div className="packing-grid">
+    <article className="packing-card">
+      <h3>Convite ou confirmacao</h3>
+      <p>
+        Traga o convite fisico ou a confirmacao enviada por e-mail. Ela ajuda na
+        organizacao da recepcao.
+      </p>
+    </article>
+    <article className="packing-card">
+      <h3>Documento com foto</h3>
+      <p>
+        Solicitamos identificacao na entrada para garantir que apenas convidados
+        confirmados participem do evento.
+      </p>
+    </article>
+    <article className="packing-card">
+      <h3>Roupa confortavel</h3>
+      <p>
+        O evento e ao ar livre. Leve um casaquinho leve para a noite e calcado
+        confortavel para circular no jardim.
+      </p>
+    </article>
+    <article className="packing-card">
+      <h3>Presente reservado</h3>
+      <p>
+        Se escolheu um item da lista, reserve pelo Registro Convidado antes de
+        comprar. Assim evitamos duplicidade.
+      </p>
+    </article>
+    <article className="packing-card">
+      <h3>Guarda-chuva compacto</h3>
+      <p>
+        Junho pode trazer chuva rapida em Salvador. Um guarda-chuva pequeno cabe
+        na bolsa e salva o look.
+      </p>
+    </article>
+    <article className="packing-card">
+      <h3>Boa energia</h3>
+      <p>
+        O mais importante: venha celebrar com a gente. Fotos, abracos e dancar
+        ate o fim da noite sao bem-vindos.
+      </p>
+    </article>
+  </div>
 </section>
 
 <section className="history-section" id="nossa-historia">
@@ -462,7 +618,7 @@ function App() {
       <h1>Where the Wild Things Wed</h1>
       <p>
               Nós nos conhecemos em uma caminhada artística em Seattle, literalmente esbarrando um no outro. Começamos a fazer trilhas juntos — muitas trilhas. Nós dois amamos o noroeste do Pacífico, as montanhas, a costa, tudo. Estávamos sempre por aí, nas trilhas, apenas curtindo, conversando ao redor de uma fogueira. Simplesmente encaixou. Estávamos na mesma sintonia.
-      Uma vez, estávamos fazendo trilha e eu reclamei das minhas botas, e a Grace simplesmente parou e começou a amarrar meus cadarços para mim. Foi aí que eu soube. Não foi um grande gesto. Foi só… a gente.
+      Uma vez, estávamos fazendo trilha e eu reclamei das minhas botas, e a Gladys simplesmente parou e começou a amarrar meus cadarços para mim. Foi aí que eu soube. Não foi um grande gesto. Foi só… a gente.
       </p>
       <p>
        Construímos uma vida juntos. É tranquila, é de verdade. Gostamos de aventuras simples, mas também apreciamos um bom vinho com amigos. Desde aquelas primeiras trilhas até aprender a viver juntos sob incontáveis céus estrelados, sempre encontramos nossos melhores momentos na natureza.
@@ -527,14 +683,14 @@ function App() {
     </div>
   </main>
   <div className="guest-register-footer">
-          <p>J&amp;J</p>
-          <a href="#home">SATURDAY, SEPTEMBER 20,2025</a>
+          <p>L&amp;G</p>
+          <a href="#sobre-casamento">SABADO, 30 DE JUNHO DE 2026</a>
     </div>
 </section>
 
       <section className="faq-section" id="duvidas">
         <div className="faq-heading">
-          <p>J&amp;J</p>
+          <p>L&amp;G</p>
           <h2>Painel de Duvidas</h2>
           <span>
             Reunimos aqui as principais informacoes para voce chegar tranquilo,
@@ -626,14 +782,14 @@ function App() {
               Aqui no site, voce descobre tudo o que precisa saber para
               aproveitar o nosso casamento do inicio ao fim.
             </p>
-            <button type="button" onClick={() => setCurrentScreen('registro')}>
+            <button type="button" onClick={() => navigateToScreen('registro')}>
               Fazer o Registro
             </button>
           </div>
         </div>
 
         <div className="guest-register-footer">
-          <p>J&amp;J</p>
+          <p>L&amp;G</p>
           <a href="#home">Volte para cima</a>
         </div>
       </section>

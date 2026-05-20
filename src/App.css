@@ -109,6 +109,322 @@
   letter-spacing: 1px;
 }
 
+.wedding-section,
+.packing-section {
+  width: 100vw;
+  margin: 0 calc(50% - 50vw) 48px;
+  padding: 56px 18px 64px;
+  background: #f3efe6;
+  color: #171717;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.wedding-heading,
+.packing-heading {
+  width: min(760px, 100%);
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.wedding-heading p,
+.packing-heading p {
+  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.wedding-heading h2,
+.packing-heading h2 {
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.wedding-heading span,
+.packing-heading span {
+  display: block;
+  width: min(560px, 100%);
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.wedding-intro {
+  width: min(1040px, 100%);
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(0, 1.05fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.wedding-intro img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.wedding-intro-text h3 {
+  margin: 0 0 14px;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.wedding-intro-text p {
+  margin: 0 0 14px;
+  font-size: 18px;
+  line-height: 1.38;
+  text-align: left;
+}
+
+.wedding-intro-text p:last-child {
+  margin-bottom: 0;
+}
+
+.wedding-details-grid {
+  width: min(1040px, 100%);
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.wedding-detail-card {
+  padding: 24px 22px;
+  border: 1px solid rgba(23, 23, 23, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+  text-align: left;
+}
+
+.wedding-detail-card span {
+  display: block;
+  margin: 0 0 12px;
+  color: #7c735f;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.wedding-detail-card h3 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.wedding-detail-card p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.38;
+}
+
+.wedding-schedule {
+  width: min(640px, 100%);
+  margin: 0 auto 28px;
+  padding: 28px 26px;
+  border: 1px solid rgba(23, 23, 23, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.wedding-schedule h3 {
+  margin: 0 0 18px;
+  font-size: 26px;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.wedding-schedule-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.wedding-schedule-list li {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  text-align: left;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.wedding-schedule-list strong {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.wedding-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.wedding-cta a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #978f7d;
+  color: #f8f4ec;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.wedding-cta a:last-child {
+  background: transparent;
+  border: 1px solid rgba(23, 23, 23, 0.28);
+  color: #171717;
+}
+
+.packing-section {
+  background: #ded8c8;
+}
+
+.packing-grid {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.packing-card {
+  min-height: 170px;
+  padding: 24px 22px;
+  border: 1px solid rgba(23, 23, 23, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.34);
+  text-align: left;
+}
+
+.packing-card h3 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.packing-card p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.38;
+}
+
+.history-section {
+  width: 100vw;
+  margin: 0 calc(50% - 50vw) 48px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #171717;
+}
+
+.header-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+  gap: 0;
+  align-items: stretch;
+  background: #f3efe6;
+}
+
+.header-section .hero-image {
+  max-height: none;
+  min-height: 420px;
+  height: 100%;
+}
+
+.header-content {
+  padding: 48px 36px;
+  text-align: left;
+}
+
+.header-content h1 {
+  margin: 0 0 20px;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  color: #171717;
+}
+
+.header-content p {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.main-section {
+  width: min(1040px, 100% - 36px);
+  margin: 0 auto;
+  padding: 40px 0 24px;
+}
+
+.timeline-block {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 36px;
+  text-align: left;
+}
+
+.timeline-block.reverse {
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+}
+
+.timeline-block.reverse .timeline-image {
+  order: 2;
+}
+
+.timeline-block.reverse .timeline-text {
+  order: 1;
+}
+
+.timeline-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.timeline-text h2 {
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: #171717;
+}
+
+.timeline-text p {
+  margin: 0 0 12px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
 .faq-section {
   width: 100vw;
   margin: 0 calc(50% - 50vw) 48px;
@@ -653,6 +969,47 @@
 
   .duo-card a {
     font-size: 24px;
+  }
+
+  .wedding-section,
+  .packing-section {
+    padding: 44px 14px 48px;
+  }
+
+  .wedding-intro {
+    grid-template-columns: 1fr;
+  }
+
+  .wedding-details-grid,
+  .packing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wedding-schedule-list li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .header-section {
+    grid-template-columns: 1fr;
+  }
+
+  .header-section .hero-image {
+    min-height: 280px;
+  }
+
+  .header-content {
+    padding: 32px 22px;
+  }
+
+  .timeline-block,
+  .timeline-block.reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-block.reverse .timeline-image,
+  .timeline-block.reverse .timeline-text {
+    order: unset;
   }
 
   .faq-section {
