@@ -555,62 +555,6 @@ function App() {
   </div>
 </section>
 
-<section className="packing-section" id="o-que-levar">
-  <div className="packing-heading">
-    <p>L&amp;G</p>
-    <h2>O que levar</h2>
-    <span>
-      Preparamos esta lista para voce chegar preparado e aproveitar a festa com
-      tranquilidade.
-    </span>
-  </div>
-
-  <div className="packing-grid">
-    <article className="packing-card">
-      <h3>Convite ou confirmacao</h3>
-      <p>
-        Traga o convite fisico ou a confirmacao enviada por e-mail. Ela ajuda na
-        organizacao da recepcao.
-      </p>
-    </article>
-    <article className="packing-card">
-      <h3>Documento com foto</h3>
-      <p>
-        Solicitamos identificacao na entrada para garantir que apenas convidados
-        confirmados participem do evento.
-      </p>
-    </article>
-    <article className="packing-card">
-      <h3>Roupa confortavel</h3>
-      <p>
-        O evento e ao ar livre. Leve um casaquinho leve para a noite e calcado
-        confortavel para circular no jardim.
-      </p>
-    </article>
-    <article className="packing-card">
-      <h3>Presente reservado</h3>
-      <p>
-        Se escolheu um item da lista, reserve pelo Registro Convidado antes de
-        comprar. Assim evitamos duplicidade.
-      </p>
-    </article>
-    <article className="packing-card">
-      <h3>Guarda-chuva compacto</h3>
-      <p>
-        Junho pode trazer chuva rapida em Salvador. Um guarda-chuva pequeno cabe
-        na bolsa e salva o look.
-      </p>
-    </article>
-    <article className="packing-card">
-      <h3>Boa energia</h3>
-      <p>
-        O mais importante: venha celebrar com a gente. Fotos, abracos e dancar
-        ate o fim da noite sao bem-vindos.
-      </p>
-    </article>
-  </div>
-</section>
-
 <section className="history-section" id="nossa-historia">
   <section className="header-section">
     <img src="/foto1.jpeg" alt="Foto do casal" className="hero-image" />
@@ -682,13 +626,11 @@ function App() {
       </div>
     </div>
   </main>
-  <div className="guest-register-footer">
-          <p>L&amp;G</p>
-          <a href="#sobre-casamento">SABADO, 30 DE JUNHO DE 2026</a>
-    </div>
-</section><section className="packing-section" id="o-que-levar">
+</section>
+
+<section className="packing-section" id="o-que-levar">
   <div className="packing-heading">
-    <p>J&amp;J</p>
+    <p>L&amp;G</p>
     <h2>O que levar</h2>
     <span>
       Preparamos uma lista simples para voce chegar tranquilo e aproveitar
@@ -696,16 +638,17 @@ function App() {
     </span>
   </div>
 
-  <div className="packing-note">
-    <p>Dica dos noivos</p>
-    <h3>Leve o essencial e venha leve</h3>
-    <span>
-      O clima pode variar ao longo do dia. Um casaco leve e um sapato
-      confortavel fazem toda a diferenca entre a cerimonia e a festa.
-    </span>
-  </div>
+  <div className="packing-content">
+    <div className="packing-note">
+      <p>Dica dos noivos</p>
+      <h3>Leve o essencial e venha leve</h3>
+      <span>
+        O clima pode variar ao longo do dia. Um casaco leve e um sapato
+        confortavel fazem toda a diferenca entre a cerimonia e a festa.
+      </span>
+    </div>
 
-  <div className="packing-grid">
+    <div className="packing-grid">
     <article className="packing-card">
       <span>01</span>
       <h3>Convite ou confirmacao</h3>
@@ -754,6 +697,7 @@ function App() {
         preferir levar algo pessoal, sera recebido com muito carinho.
       </p>
     </article>
+    </div>
   </div>
 </section>
       <section className="faq-section" id="duvidas">
