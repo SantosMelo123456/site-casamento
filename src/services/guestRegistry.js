@@ -1,16 +1,4 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  runTransaction,
-  serverTimestamp,
-  writeBatch,
-} from 'firebase/firestore'
-import { db } from './firebase'
-
-const giftsCollection = collection(db, 'presentes')
-const guestsCollection = collection(db, 'convidados')
-const guestGiftsCollection = collection(db, 'convidado_presentes')
+import { supabase } from './supabase'
 
 class ReservedGiftError extends Error {
   constructor(giftNames) {
@@ -20,126 +8,78 @@ class ReservedGiftError extends Error {
   }
 }
 
-const mapGiftDocument = (giftDoc) => ({
-  id: giftDoc.id,
-  ...giftDoc.data(),
-})
-
-const sortByPosition = (leftGift, rightGift) =>
-  (leftGift.position ?? 0) - (rightGift.position ?? 0)
+function isGiftAvailable(gift) {
+  return (
+    gift.disponivel === true ||
+    gift.disponivel?.toString().trim().toLowerCase() === 'true'
+  )
+}
 
 async function listGifts() {
-  const snapshot = await getDocs(giftsCollection)
+  const { data, error } = await supabase
+    .from('presentes')
+    .select('*')
 
-  return snapshot.docs.map(mapGiftDocument).sort(sortByPosition)
+  if (error) throw error
+  return data
 }
 
 async function ensureGiftCatalog(defaultGifts) {
   const existingGifts = await listGifts()
+  if (existingGifts.length > 0) return existingGifts
 
-  if (existingGifts.length > 0) {
-    return existingGifts
-  }
+  const { error } = await supabase
+    .from('presentes')
+    .insert(defaultGifts.map((gift) => ({
+      nome: gift.name,
+      descricao: gift.descricao ?? '',
+      imagem_url: gift.imagem_url ?? '',
+      disponivel: true,
+    })))
 
-  const batch = writeBatch(db)
-
-  defaultGifts.forEach((gift, index) => {
-    const giftRef = doc(db, 'presentes', gift.id)
-
-    batch.set(giftRef, {
-      name: gift.name,
-      storeUrl: gift.storeUrl,
-      price: gift.price,
-      position: gift.position ?? index,
-      status: 'disponivel',
-      reservedByGuestId: null,
-      reservedByGuestName: null,
-      createdAt: serverTimestamp(),
-    })
-  })
-
-  await batch.commit()
-
+  if (error) throw error
   return listGifts()
 }
 
-async function submitGuestRegistration({
-  guestData,
-  selectedGiftIds,
-  selectedGifts,
-}) {
-  return runTransaction(db, async (transaction) => {
-    const guestRef = doc(guestsCollection)
-    const giftRefs = selectedGiftIds.map((giftId) => doc(db, 'presentes', giftId))
-    const giftSnapshots = await Promise.all(
-      giftRefs.map((giftRef) => transaction.get(giftRef)),
-    )
+async function submitGuestRegistration({ guestData, selectedGiftIds }) {
+  const { data: giftsData, error: giftsError } = await supabase
+    .from('presentes')
+    .select('*')
+    .in('id', selectedGiftIds)
 
-    const unavailableGiftNames = giftSnapshots
-      .filter((giftSnapshot) => {
-        if (!giftSnapshot.exists()) {
-          return true
-        }
+  if (giftsError) throw giftsError
 
-        return giftSnapshot.data().status === 'reservado'
-      })
-      .map((giftSnapshot, index) =>
-        giftSnapshot.exists()
-          ? giftSnapshot.data().name
-          : selectedGifts[index]?.name ?? 'Presente indisponivel',
-      )
+  const unavailableGiftNames = giftsData
+    .filter(gift => !isGiftAvailable(gift))
+    .map(gift => gift.nome)
 
-    if (unavailableGiftNames.length > 0) {
-      throw new ReservedGiftError(unavailableGiftNames)
-    }
+  if (unavailableGiftNames.length > 0) {
+    throw new ReservedGiftError(unavailableGiftNames)
+  }
 
-    transaction.set(guestRef, {
+  const { data: guest, error: guestError } = await supabase
+    .from('convidados')
+    .insert({
       nome: guestData.nome,
       email: guestData.email,
-      presenca: guestData.presenca,
-      temAcompanhante: guestData.temAcompanhante,
-      acompanhante: guestData.temAcompanhante
-        ? { nome: guestData.nomeAcompanhante }
-        : null,
-      quantidadeCriancas: guestData.quantidadeCriancas,
-      prato: guestData.prato,
-      mensagem: guestData.mensagem,
-      presentesSelecionados: selectedGifts.map((gift) => ({
-        id: gift.id,
-        nome: gift.name,
-        preco: gift.price,
-      })),
-      createdAt: serverTimestamp(),
+      confirmou_presenca: guestData.presenca === 'sim',
+      nome_parceiro: guestData.temAcompanhante ? guestData.nomeAcompanhante : null,
+      criancas: guestData.quantidadeCriancas,
+      preferencia_cardapio: guestData.prato,
     })
+    .select()
+    .single()
 
-    selectedGifts.forEach((gift, index) => {
-      const relationRef = doc(guestGiftsCollection)
+  if (guestError) throw guestError
 
-      transaction.update(giftRefs[index], {
-        status: 'reservado',
-        reservedByGuestId: guestRef.id,
-        reservedByGuestName: guestData.nome,
-        reservedAt: serverTimestamp(),
-      })
+  const { error: updateError } = await supabase
+    .from('presentes')
+    .update({ disponivel: false })
+    .in('id', selectedGiftIds)
 
-      transaction.set(relationRef, {
-        convidadoId: guestRef.id,
-        convidadoNome: guestData.nome,
-        presenteId: gift.id,
-        presenteNome: gift.name,
-        preco: gift.price,
-        lojaUrl: gift.storeUrl,
-        createdAt: serverTimestamp(),
-      })
-    })
+  if (updateError) throw updateError
 
-    return guestRef.id
-  })
+  return guest.id
 }
 
-export {
-  ReservedGiftError,
-  ensureGiftCatalog,
-  listGifts,
-  submitGuestRegistration,
-}
+export { ReservedGiftError, ensureGiftCatalog, listGifts, submitGuestRegistration }

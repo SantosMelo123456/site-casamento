@@ -37,16 +37,22 @@
   gap: 34px;
 }
 
-.hero-nav a {
+.hero-nav a,
+.hero-nav button {
+  border: 0;
+  padding: 0;
+  background: transparent;
   font-family: 'Times New Roman', Times, serif;
   font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #f3f3f3;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.hero-nav a:hover {
+.hero-nav a:hover,
+.hero-nav button:hover {
   text-decoration: underline;
 }
 
@@ -93,12 +99,16 @@
   filter: brightness(0.82);
 }
 
-.duo-card a {
+.duo-card a,
+.duo-card button {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   margin: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
   font-family: 'Times New Roman', Times, serif;
   font-size: 38px;
   font-weight: 400;
@@ -107,6 +117,58 @@
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.wedding-page {
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #f3efe6;
+}
+
+.story-page {
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #f3efe6;
+}
+
+.packing-page {
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #ded8c8;
+}
+
+.questions-page {
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #ded8c8;
+}
+
+.page-back {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  z-index: 5;
+  min-height: 42px;
+  padding: 0 22px;
+  border: 1px solid rgba(23, 23, 23, 0.24);
+  border-radius: 999px;
+  background: rgba(243, 239, 230, 0.86);
+  color: #171717;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .wedding-section,
@@ -117,6 +179,12 @@
   background: #f3efe6;
   color: #171717;
   font-family: 'Times New Roman', Times, serif;
+}
+
+.wedding-section-page {
+  min-height: 100vh;
+  margin-bottom: 0;
+  padding-top: 76px;
 }
 
 .wedding-heading,
@@ -133,7 +201,9 @@
   line-height: 1;
 }
 
+.wedding-heading h1,
 .wedding-heading h2,
+.packing-heading h1,
 .packing-heading h2 {
   margin: 0 0 16px;
   font-size: 32px;
@@ -169,6 +239,7 @@
   border-radius: 8px;
 }
 
+.wedding-intro-text h2,
 .wedding-intro-text h3 {
   margin: 0 0 14px;
   font-size: 28px;
@@ -214,6 +285,7 @@
   text-transform: uppercase;
 }
 
+.wedding-detail-card h2,
 .wedding-detail-card h3 {
   margin: 0 0 10px;
   font-size: 24px;
@@ -236,6 +308,7 @@
   background: rgba(255, 255, 255, 0.42);
 }
 
+.wedding-schedule h2,
 .wedding-schedule h3 {
   margin: 0 0 18px;
   font-size: 26px;
@@ -277,13 +350,15 @@
   gap: 12px;
 }
 
-.wedding-cta a {
+.wedding-cta a,
+.wedding-cta button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 220px;
   min-height: 52px;
   padding: 0 24px;
+  border: 0;
   border-radius: 999px;
   background: #978f7d;
   color: #f8f4ec;
@@ -293,9 +368,11 @@
   letter-spacing: 1px;
   text-decoration: none;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
-.wedding-cta a:last-child {
+.wedding-cta a:last-child,
+.wedding-cta button:last-child {
   background: transparent;
   border: 1px solid rgba(23, 23, 23, 0.28);
   color: #171717;
@@ -303,6 +380,12 @@
 
 .packing-section {
   background: #ded8c8;
+}
+
+.packing-section-page {
+  min-height: 100vh;
+  margin-bottom: 0;
+  padding-top: 76px;
 }
 
 .packing-content {
@@ -330,6 +413,7 @@
   text-align: left;
 }
 
+.packing-card h2,
 .packing-card h3 {
   margin: 0 0 12px;
   font-size: 22px;
@@ -348,6 +432,30 @@
   margin: 0 calc(50% - 50vw) 48px;
   font-family: 'Times New Roman', Times, serif;
   color: #171717;
+}
+
+.history-section-page {
+  margin-bottom: 0;
+  padding-top: 72px;
+}
+
+.history-section-page .header-section {
+  width: min(1040px, 100% - 36px);
+  margin: 0 auto;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(320px, 1fr);
+  gap: 34px;
+  align-items: start;
+  background: transparent;
+}
+
+.history-section-page .header-section .hero-image {
+  min-height: 300px;
+  max-height: 380px;
+  border-radius: 8px;
+}
+
+.history-section-page .header-content {
+  padding: 0;
 }
 
 .header-section {
@@ -421,6 +529,7 @@
 
 .timeline-text h2 {
   margin: 0 0 12px;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: 26px;
   font-weight: 400;
   line-height: 1.15;
@@ -442,6 +551,12 @@
   font-family: 'Times New Roman', Times, serif;
 }
 
+.faq-section-page {
+  min-height: 100vh;
+  margin-bottom: 0;
+  padding-top: 76px;
+}
+
 .faq-heading {
   width: min(760px, 100%);
   margin: 0 auto 34px;
@@ -454,6 +569,7 @@
   line-height: 1;
 }
 
+.faq-heading h1,
 .faq-heading h2 {
   margin: 0 0 16px;
   font-size: 32px;
@@ -531,6 +647,7 @@
   text-transform: uppercase;
 }
 
+.faq-address h2,
 .faq-address h3 {
   margin: 0 0 10px;
   font-size: 28px;
@@ -569,6 +686,7 @@
   letter-spacing: 1px;
 }
 
+.faq-card h2,
 .faq-card h3 {
   margin: 0 0 12px;
   font-size: 23px;
@@ -1004,6 +1122,7 @@
   text-transform: uppercase;
 }
 
+.packing-note h2,
 .packing-note h3 {
   margin: 0 0 12px;
   font-size: 28px;
@@ -1039,6 +1158,7 @@
   letter-spacing: 1px;
 }
 
+.packing-card h2,
 .packing-card h3 {
   margin: 0 0 12px;
   font-size: 23px;
@@ -1063,7 +1183,8 @@
     gap: 14px;
   }
 
-  .hero-nav a {
+  .hero-nav a,
+  .hero-nav button {
     font-size: 10px;
     letter-spacing: 0.6px;
   }
@@ -1083,7 +1204,8 @@
     aspect-ratio: 4 / 3;
   }
 
-  .duo-card a {
+  .duo-card a,
+  .duo-card button {
     font-size: 24px;
   }
 
@@ -1114,6 +1236,11 @@
     min-height: 280px;
   }
 
+  .history-section-page .header-section .hero-image {
+    min-height: 210px;
+    max-height: 280px;
+  }
+
   .header-content {
     padding: 32px 22px;
   }
@@ -1136,6 +1263,7 @@
     margin-bottom: 24px;
   }
 
+  .faq-heading h1,
   .faq-heading h2 {
     font-size: 26px;
   }
@@ -1156,6 +1284,7 @@
     padding: 22px 18px;
   }
 
+  .faq-address h2,
   .faq-address h3 {
     font-size: 24px;
   }
@@ -1178,6 +1307,7 @@
     margin-bottom: 14px;
   }
 
+  .faq-card h2,
   .faq-card h3 {
     font-size: 21px;
   }

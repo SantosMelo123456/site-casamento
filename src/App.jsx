@@ -1,5 +1,3 @@
-import app from './services/firebase';
-console.log('Firebase conectado:', app.name);
 import { useEffect, useState } from 'react'
 import './App.css'
 import previewImage from './assets/preview.webp'
@@ -7,8 +5,10 @@ import downloadImage from './assets/download.webp'
 import downloadImage1 from './assets/download-1.webp'
 import venueImage from './assets/download (3).webp'
 import previewBottomImage from './assets/preview-bottom.png'
-import gridFourImage from './assets/grid-four.png'
 import registroConvidadoImage from './assets/registro-convidado.jpg'
+import faqLanternsImage from './assets/faq-lanterns.jpg'
+import faqParasolsImage from './assets/faq-parasols.jpg'
+import faqFlowersImage from './assets/faq-flowers.jpg'
 import giftCanistersImage from './assets/gift-canisters.jpeg'
 import giftMirrorImage from './assets/gift-mirror.jpeg'
 import giftPitcherImage from './assets/gift-pitcher.jpeg'
@@ -108,6 +108,404 @@ const giftImageById = Object.fromEntries(
   localGiftCatalog.map((gift) => [gift.id, gift.image]),
 )
 
+function WeddingDetailsPage({ onBack, onRegister, onQuestions }) {
+  return (
+    <main className="wedding-page">
+      <button className="page-back" type="button" onClick={onBack}>
+        Voltar
+      </button>
+
+      <section className="wedding-section wedding-section-page">
+        <div className="wedding-heading">
+          <p>L&amp;G</p>
+          <h1>Sobre o Casamento</h1>
+          <span>
+            Tudo o que voce precisa saber para celebrar conosco: data, horarios,
+            local e o clima do nosso grande dia.
+          </span>
+        </div>
+
+        <div className="wedding-intro">
+          <img src={downloadImage1} alt="Detalhes da celebracao" />
+          <div className="wedding-intro-text">
+            <h2>Uma tarde para lembrar</h2>
+            <p>
+              Lucas e Gladys convidam voce para uma celebracao intima ao ar livre,
+              cercada de jardim, musica ao vivo e a presenca de quem faz parte da
+              nossa historia. A cerimonia e a festa acontecem no mesmo endereco,
+              para que voce possa aproveitar cada momento sem pressa.
+            </p>
+            <p>
+              Sabado, 30 de junho de 2026, a partir das 16h, na Villa Jardim Aurora,
+              em Salvador. Confirmamos presenca e lista de presentes pelo Registro
+              Convidado aqui no site.
+            </p>
+          </div>
+        </div>
+
+        <div className="wedding-details-grid">
+          <article className="wedding-detail-card">
+            <span>Data</span>
+            <h2>Sabado, 30 de junho de 2026</h2>
+            <p>Cerimonia ao entardecer, com recepcao em seguida no mesmo local.</p>
+          </article>
+          <article className="wedding-detail-card">
+            <span>Horario</span>
+            <h2>Cerimonia as 16h</h2>
+            <p>Chegue entre 15h30 e 15h45 para acomodacao tranquila dos convidados.</p>
+          </article>
+          <article className="wedding-detail-card">
+            <span>Local</span>
+            <h2>Villa Jardim Aurora</h2>
+            <p>
+              Rua das Acacias, 248 - Jardim das Flores, Salvador - BA. Estacionamento
+              no proprio espaco.
+            </p>
+          </article>
+          <article className="wedding-detail-card">
+            <span>Traje</span>
+            <h2>Social elegante</h2>
+            <p>
+              Tons claros e terrosos combinam com o jardim. Evite saltos finos em
+              areas de grama.
+            </p>
+          </article>
+        </div>
+
+        <div className="wedding-schedule">
+          <h2>Cronograma do dia</h2>
+          <ol className="wedding-schedule-list">
+            <li>
+              <strong>15h30</strong>
+              <span>Recepcao dos convidados no jardim</span>
+            </li>
+            <li>
+              <strong>16h00</strong>
+              <span>Cerimonia ao ar livre</span>
+            </li>
+            <li>
+              <strong>17h00</strong>
+              <span>Cocktail e sessao de fotos</span>
+            </li>
+            <li>
+              <strong>19h30</strong>
+              <span>Jantar e festa</span>
+            </li>
+            <li>
+              <strong>23h30</strong>
+              <span>Encerramento</span>
+            </li>
+          </ol>
+        </div>
+
+        <div className="wedding-cta">
+          <button type="button" onClick={onRegister}>
+            Confirmar presenca
+          </button>
+          <button type="button" onClick={onQuestions}>
+            Ver painel de duvidas
+          </button>
+        </div>
+      </section>
+    </main>
+  )
+}
+
+function StoryPage({ onBack }) {
+  return (
+    <main className="story-page">
+      <button className="page-back" type="button" onClick={onBack}>
+        Voltar
+      </button>
+
+      <section className="history-section history-section-page">
+        <section className="header-section">
+          <img src="/foto1.jpeg" alt="Foto do casal" className="hero-image" />
+          <div className="header-content">
+            <h1>Where the Wild Things Wed</h1>
+            <p>
+              Nós nos conhecemos em uma caminhada artística em Seattle, literalmente
+              esbarrando um no outro. Começamos a fazer trilhas juntos — muitas
+              trilhas. Nós dois amamos o noroeste do Pacífico, as montanhas, a
+              costa, tudo. Estávamos sempre por aí, nas trilhas, apenas curtindo,
+              conversando ao redor de uma fogueira. Simplesmente encaixou. Estávamos
+              na mesma sintonia.
+            </p>
+            <p>
+              Uma vez, estávamos fazendo trilha e eu reclamei das minhas botas, e a
+              Gladys simplesmente parou e começou a amarrar meus cadarços para mim.
+              Foi aí que eu soube. Não foi um grande gesto. Foi só… a gente.
+            </p>
+            <p>
+              Construímos uma vida juntos. É tranquila, é de verdade. Gostamos de
+              aventuras simples, mas também apreciamos um bom vinho com amigos.
+              Desde aquelas primeiras trilhas até aprender a viver juntos sob
+              incontáveis céus estrelados, sempre encontramos nossos melhores
+              momentos na natureza.
+            </p>
+            <p>
+              Parece certo celebrar cercados pelas pessoas que nos entendem.
+              Estamos animados para começar este próximo capítulo com vocês.
+            </p>
+            <p>Em frente e para o alto, rumo à próxima aventura!</p>
+          </div>
+        </section>
+
+        <section className="main-section">
+          <div className="timeline-block">
+            <img
+              src="/foto2.png"
+              alt="Quando nos conhecemos"
+              className="timeline-image"
+            />
+            <div className="timeline-text">
+              <h2>Hoje... - 20/01/2007</h2>
+            </div>
+          </div>
+
+          <div className="timeline-block reverse">
+            <img
+              src="/foto3.jpeg"
+              alt="Campamento Jovens"
+              className="timeline-image"
+            />
+            <div className="timeline-text">
+              <h2>Campamento Jovens - 02/2017</h2>
+            </div>
+          </div>
+
+          <div className="timeline-block">
+            <img src="/foto4.jpeg" alt="1 ano juntos" className="timeline-image" />
+            <div className="timeline-text">
+              <h2>1 Ano Juntos - 2018</h2>
+            </div>
+          </div>
+
+          <div className="timeline-block reverse">
+            <img
+              src="/foto5.png"
+              alt="2º ano de namoro"
+              className="timeline-image"
+            />
+            <div className="timeline-text">
+              <h2>2º Ano de Namoro - 2018</h2>
+            </div>
+          </div>
+
+          <div className="timeline-block">
+            <img
+              src="/foto6.png"
+              alt="Pedido de casamento"
+              className="timeline-image"
+            />
+            <div className="timeline-text">
+              <h2>Pedido de Casamento - 12/06/2020</h2>
+            </div>
+          </div>
+
+          <div className="timeline-block reverse">
+            <img
+              src="/foto9.png"
+              alt="Preparativos casamento"
+              className="timeline-image"
+            />
+            <div className="timeline-text">
+              <h2>1º Ano de Noivado - 2020</h2>
+            </div>
+          </div>
+
+          <div className="timeline-block">
+            <img
+              src="/foto10.png"
+              alt="Preparativos casamento"
+              className="timeline-image"
+            />
+            <div className="timeline-text">
+              <h2>Preparativos Casamento</h2>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  )
+}
+
+function PackingPage({ onBack }) {
+  return (
+    <main className="packing-page">
+      <button className="page-back" type="button" onClick={onBack}>
+        Voltar
+      </button>
+
+      <section className="packing-section packing-section-page">
+        <div className="packing-heading">
+          <p>L&amp;G</p>
+          <h1>O que levar</h1>
+          <span>
+            Preparamos uma lista simples para voce chegar tranquilo e aproveitar
+            cada momento da celebracao com a gente.
+          </span>
+        </div>
+
+        <div className="packing-content">
+          <div className="packing-note">
+            <p>Dica dos noivos</p>
+            <h2>Leve o essencial e venha leve</h2>
+            <span>
+              O clima pode variar ao longo do dia. Um casaco leve e um sapato
+              confortavel fazem toda a diferenca entre a cerimonia e a festa.
+            </span>
+          </div>
+
+          <div className="packing-grid">
+            <article className="packing-card">
+              <span>01</span>
+              <h2>Convite ou confirmacao</h2>
+              <p>
+                Tenha em maos o convite ou a confirmacao do registro. Isso ajuda
+                na organizacao da recepcao e do seu lugar na mesa.
+              </p>
+            </article>
+            <article className="packing-card">
+              <span>02</span>
+              <h2>Traje social elegante</h2>
+              <p>
+                Sugerimos look social elegante, com roupas confortaveis para
+                circular entre cerimonia, fotos e festa.
+              </p>
+            </article>
+            <article className="packing-card">
+              <span>03</span>
+              <h2>Calcado confortavel</h2>
+              <p>
+                Se possivel, leve um par extra ou um sapato mais confortavel para
+                usar depois da cerimonia.
+              </p>
+            </article>
+            <article className="packing-card">
+              <span>04</span>
+              <h2>Casaco ou xale leve</h2>
+              <p>
+                A noite pode esfriar no jardim. Um casaco, xale ou estola combina
+                com o clima e com as fotos.
+              </p>
+            </article>
+            <article className="packing-card">
+              <span>05</span>
+              <h2>Protetor solar e acessorios</h2>
+              <p>
+                Parte da celebracao acontece ao ar livre. Protetor solar, oculos
+                e um lenco sao bem-vindos.
+              </p>
+            </article>
+            <article className="packing-card">
+              <span>06</span>
+              <h2>Presente ou reserva online</h2>
+              <p>
+                Voce pode reservar presentes pelo Registro Convidado no site. Se
+                preferir levar algo pessoal, sera recebido com muito carinho.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}
+
+function QuestionsPage({ onBack }) {
+  return (
+    <main className="questions-page">
+      <button className="page-back" type="button" onClick={onBack}>
+        Voltar
+      </button>
+
+      <section className="faq-section faq-section-page">
+        <div className="faq-heading">
+          <p>L&amp;G</p>
+          <h1>Painel de Duvidas</h1>
+          <span>
+            Reunimos aqui as principais informacoes para voce chegar tranquilo,
+            encontrar o local e aproveitar cada momento da celebracao.
+          </span>
+        </div>
+
+        <div className="faq-layout">
+          <div className="faq-location">
+            <div className="faq-location-main">
+              <img src={faqLanternsImage} alt="Decoracao com lanternas suspensas" />
+            </div>
+            <div className="faq-location-gallery">
+              <img src={faqParasolsImage} alt="Madrinhas com sombrinhas brancas" />
+              <img src={faqFlowersImage} alt="Flores em garrafas de vidro" />
+            </div>
+            <div className="faq-address" id="localizacao">
+              <p>Local da cerimonia</p>
+              <h2>Villa Jardim Aurora</h2>
+              <span>
+                Rua das Acacias, 248 - Jardim das Flores, Salvador - BA
+              </span>
+            </div>
+          </div>
+
+          <div className="faq-grid">
+            <article className="faq-card">
+              <span>01</span>
+              <h2>Qual sera o horario?</h2>
+              <p>
+                A cerimonia esta marcada para as 16h. Sugerimos chegar com
+                alguns minutos de antecedencia para encontrar seu lugar com
+                calma.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>02</span>
+              <h2>Como chego ao local?</h2>
+              <p>
+                O endereco acima e uma localizacao ficticia para o projeto. A
+                referencia principal e a Villa Jardim Aurora, proxima a Praca
+                das Flores.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>03</span>
+              <h2>Qual traje devo usar?</h2>
+              <p>
+                O traje sugerido e social elegante. Escolha roupas confortaveis
+                para circular entre a cerimonia, as fotos e a festa.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>04</span>
+              <h2>Posso levar acompanhante?</h2>
+              <p>
+                Sim, se o acompanhante estiver indicado no seu convite. No
+                registro de convidado voce informa o nome de quem ira com voce.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>05</span>
+              <h2>Como confirmo presenca?</h2>
+              <p>
+                Use a area de Registro Convidado para confirmar sua presenca,
+                informar restricoes e deixar uma mensagem para os noivos.
+              </p>
+            </article>
+            <article className="faq-card">
+              <span>06</span>
+              <h2>Como funciona a lista de presentes?</h2>
+              <p>
+                A lista fica dentro do registro. Voce escolhe um ou mais
+                presentes disponiveis e o site reserva sua selecao.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}
+
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home')
   const [hasCompanion, setHasCompanion] = useState('')
@@ -119,10 +517,28 @@ function App() {
   const [registrationError, setRegistrationError] = useState('')
 
   const hydrateGifts = (giftRecords) =>
-    giftRecords.map((gift) => ({
-      ...gift,
-      image: giftImageById[gift.id],
-    }))
+    giftRecords.map((gift, index) => {
+      const isAvailable =
+        gift.disponivel === true ||
+        gift.disponivel?.toString().trim().toLowerCase() === 'true'
+
+      return {
+        ...gift,
+        name: gift.name ?? gift.nome,
+        storeUrl: gift.storeUrl ?? gift.store_url ?? '#',
+        price:
+          typeof gift.price === 'string'
+            ? gift.price
+            : typeof gift.preco === 'string'
+              ? gift.preco
+              : '',
+        status: isAvailable ? 'disponivel' : 'reservado',
+        image:
+          gift.image ??
+          giftImageById[gift.id] ??
+          localGiftCatalog[index % localGiftCatalog.length]?.image,
+      }
+    })
 
   const navigateToScreen = (screen) => {
     setCurrentScreen(screen)
@@ -130,6 +546,28 @@ function App() {
   }
 
   useEffect(() => enableSmoothAnchorNavigation(), [])
+
+  useEffect(() => {
+    const screenByHash = {
+      '#sobre-casamento': 'sobre-casamento',
+      '#nossa-historia': 'nossa-historia',
+      '#o-que-levar': 'o-que-levar',
+      '#duvidas': 'duvidas',
+    }
+
+    const syncScreenWithHash = () => {
+      const hashScreen = screenByHash[window.location.hash]
+
+      if (hashScreen) {
+        setCurrentScreen(hashScreen)
+      }
+    }
+
+    syncScreenWithHash()
+    window.addEventListener('hashchange', syncScreenWithHash)
+
+    return () => window.removeEventListener('hashchange', syncScreenWithHash)
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -140,7 +578,13 @@ function App() {
 
       try {
         const giftRecords = await ensureGiftCatalog(
-          localGiftCatalog.map(({ image, ...gift }) => gift),
+          localGiftCatalog.map(({ id, name, storeUrl, price, position }) => ({
+            id,
+            name,
+            storeUrl,
+            price,
+            position,
+          })),
         )
 
         if (!isMounted) {
@@ -148,7 +592,7 @@ function App() {
         }
 
         setGifts(hydrateGifts(giftRecords))
-      } catch (error) {
+      } catch {
         if (!isMounted) {
           return
         }
@@ -193,6 +637,7 @@ function App() {
 
   const handleRegistrationSubmit = async (event) => {
     event.preventDefault()
+    const form = event.currentTarget
 
     if (selectedGifts.length === 0) {
       setRegistrationMessage('')
@@ -213,10 +658,6 @@ function App() {
       mensagem: formData.get('mensagem')?.toString().trim() ?? '',
     }
 
-    const selectedGiftRecords = gifts.filter((gift) =>
-      selectedGifts.includes(gift.id),
-    )
-
     setIsSubmittingRegistration(true)
     setRegistrationMessage('')
     setRegistrationError('')
@@ -225,11 +666,10 @@ function App() {
       await submitGuestRegistration({
         guestData,
         selectedGiftIds: selectedGifts,
-        selectedGifts: selectedGiftRecords,
       })
 
       await refreshGiftCatalog()
-      event.currentTarget.reset()
+      form.reset()
       setHasCompanion('')
       setSelectedGifts([])
       setRegistrationMessage(
@@ -250,6 +690,28 @@ function App() {
     } finally {
       setIsSubmittingRegistration(false)
     }
+  }
+
+  if (currentScreen === 'sobre-casamento') {
+    return (
+      <WeddingDetailsPage
+        onBack={() => navigateToScreen('home')}
+        onRegister={() => navigateToScreen('registro')}
+        onQuestions={() => navigateToScreen('duvidas')}
+      />
+    )
+  }
+
+  if (currentScreen === 'nossa-historia') {
+    return <StoryPage onBack={() => navigateToScreen('home')} />
+  }
+
+  if (currentScreen === 'o-que-levar') {
+    return <PackingPage onBack={() => navigateToScreen('home')} />
+  }
+
+  if (currentScreen === 'duvidas') {
+    return <QuestionsPage onBack={() => navigateToScreen('home')} />
   }
 
   if (currentScreen === 'registro') {
@@ -433,9 +895,21 @@ function App() {
           <div className="hero-brand">Lucas & Gladys</div>
           <nav className="hero-nav" aria-label="Navegacao principal">
             <a href="#home">Home</a>
-            <a href="#sobre-casamento">Sobre o Casamento</a>
-            <a href="#nossa-historia">Nossa Historia</a>
-            <a href="#duvidas">Painel de Duvidas</a>
+            <a
+              href="#sobre-casamento"
+              onClick={() => navigateToScreen('sobre-casamento')}
+            >
+              Sobre o Casamento
+            </a>
+            <a
+              href="#nossa-historia"
+              onClick={() => navigateToScreen('nossa-historia')}
+            >
+              Nossa Historia
+            </a>
+            <a href="#duvidas" onClick={() => navigateToScreen('duvidas')}>
+              Painel de Duvidas
+            </a>
           </nav>
         </header>
 
@@ -450,338 +924,29 @@ function App() {
 <section className="duo-grid" id="sobre">
   <article className="duo-card">
     <img src={downloadImage} alt="Nossa historia" />
-    <a href="#nossa-historia">Fotos do Casal</a>
+    <a href="#nossa-historia" onClick={() => navigateToScreen('nossa-historia')}>
+      Fotos do Casal
+    </a>
   </article>
   <article className="duo-card">
     <img src={downloadImage1} alt="Sobre o casamento" />
-    <a href="#sobre-casamento">Sobre o Casamento</a>
+    <a href="#sobre-casamento" onClick={() => navigateToScreen('sobre-casamento')}>
+      Sobre o Casamento
+    </a>
   </article>
   <article className="duo-card">
     <img src={venueImage} alt="O que levar" />
-    <a href="#o-que-levar">O que levar</a>
+    <a href="#o-que-levar" onClick={() => navigateToScreen('o-que-levar')}>
+      O que levar
+    </a>
   </article>
   <article className="duo-card">
     <img src={previewBottomImage} alt="Nossa historia" />
-    <a href="#nossa-historia">Nossa história</a>
+    <a href="#nossa-historia" onClick={() => navigateToScreen('nossa-historia')}>
+      Nossa história
+    </a>
   </article>
 </section>
-
-<section className="wedding-section" id="sobre-casamento">
-  <div className="wedding-heading">
-    <p>L&amp;G</p>
-    <h2>Sobre o Casamento</h2>
-    <span>
-      Tudo o que voce precisa saber para celebrar conosco: data, horarios,
-      local e o clima do nosso grande dia.
-    </span>
-  </div>
-
-  <div className="wedding-intro">
-    <img src={downloadImage1} alt="Detalhes da celebracao" />
-    <div className="wedding-intro-text">
-      <h3>Uma tarde para lembrar</h3>
-      <p>
-        Lucas e Gladys convidam voce para uma celebracao intima ao ar livre,
-        cercada de jardim, musica ao vivo e a presenca de quem faz parte da
-        nossa historia. A cerimonia e a festa acontecem no mesmo endereco, para
-        que voce possa aproveitar cada momento sem pressa.
-      </p>
-      <p>
-        Sabado, 30 de junho de 2026, a partir das 16h, na Villa Jardim Aurora,
-        em Salvador. Confirmamos presenca e lista de presentes pelo Registro
-        Convidado aqui no site.
-      </p>
-    </div>
-  </div>
-
-  <div className="wedding-details-grid">
-    <article className="wedding-detail-card">
-      <span>Data</span>
-      <h3>Sabado, 30 de junho de 2026</h3>
-      <p>Cerimonia ao entardecer, com recepcao em seguida no mesmo local.</p>
-    </article>
-    <article className="wedding-detail-card">
-      <span>Horario</span>
-      <h3>Cerimonia as 16h</h3>
-      <p>Chegue entre 15h30 e 15h45 para acomodacao tranquila dos convidados.</p>
-    </article>
-    <article className="wedding-detail-card">
-      <span>Local</span>
-      <h3>Villa Jardim Aurora</h3>
-      <p>
-        Rua das Acacias, 248 - Jardim das Flores, Salvador - BA. Estacionamento
-        no proprio espaco.
-      </p>
-    </article>
-    <article className="wedding-detail-card">
-      <span>Traje</span>
-      <h3>Social elegante</h3>
-      <p>
-        Tons claros e terrosos combinam com o jardim. Evite saltos finos em
-        areas de grama.
-      </p>
-    </article>
-  </div>
-
-  <div className="wedding-schedule">
-    <h3>Cronograma do dia</h3>
-    <ol className="wedding-schedule-list">
-      <li>
-        <strong>15h30</strong>
-        <span>Recepcao dos convidados no jardim</span>
-      </li>
-      <li>
-        <strong>16h00</strong>
-        <span>Cerimonia ao ar livre</span>
-      </li>
-      <li>
-        <strong>17h00</strong>
-        <span>Cocktail e sessao de fotos</span>
-      </li>
-      <li>
-        <strong>19h30</strong>
-        <span>Jantar e festa</span>
-      </li>
-      <li>
-        <strong>23h30</strong>
-        <span>Encerramento</span>
-      </li>
-    </ol>
-  </div>
-
-  <div className="wedding-cta">
-    <a href="#registro-convidado">Confirmar presenca</a>
-    <a href="#duvidas">Ver painel de duvidas</a>
-  </div>
-</section>
-
-<section className="history-section" id="nossa-historia">
-  <section className="header-section">
-    <img src="/foto1.jpeg" alt="Foto do casal" className="hero-image" />
-    <div className="header-content">
-      <h1>Where the Wild Things Wed</h1>
-      <p>
-              Nós nos conhecemos em uma caminhada artística em Seattle, literalmente esbarrando um no outro. Começamos a fazer trilhas juntos — muitas trilhas. Nós dois amamos o noroeste do Pacífico, as montanhas, a costa, tudo. Estávamos sempre por aí, nas trilhas, apenas curtindo, conversando ao redor de uma fogueira. Simplesmente encaixou. Estávamos na mesma sintonia.
-      Uma vez, estávamos fazendo trilha e eu reclamei das minhas botas, e a Gladys simplesmente parou e começou a amarrar meus cadarços para mim. Foi aí que eu soube. Não foi um grande gesto. Foi só… a gente.
-      </p>
-      <p>
-       Construímos uma vida juntos. É tranquila, é de verdade. Gostamos de aventuras simples, mas também apreciamos um bom vinho com amigos. Desde aquelas primeiras trilhas até aprender a viver juntos sob incontáveis céus estrelados, sempre encontramos nossos melhores momentos na natureza.
-      </p>
-    </div>
-  </section>
-  <main className="main-section">
-    <div className="timeline-block">
-      <img src="/foto2.png" alt="Quando nos conhecemos" className="timeline-image" />
-      <div className="timeline-text">
-         <p>
-          Parece certo celebrar cercados pelas pessoas que nos entendem. Estamos animados para começar este próximo capítulo com vocês.
-          </p>
-          <p>
-          Em frente e para o alto, rumo à próxima aventura!
-        </p>
-        <h2>Quando nos conhecemos - 20/01/2007</h2>
-       
-      </div>
-    </div>
-
-    <div className="timeline-block reverse">
-      <img src="/foto3.jpeg" alt="Campamento Jovens" className="timeline-image" />
-      <div className="timeline-text">
-        <h2>Campamento Jovens - 02/2017</h2>
-      </div>
-    </div>
-
-    <div className="timeline-block">
-      <img src="/foto4.jpeg" alt="1 ano juntos" className="timeline-image" />
-      <div className="timeline-text">
-        <h2>1 Ano Juntos - 2018</h2>
-      </div>
-    </div>
-
-    <div className="timeline-block reverse">
-      <img src="/foto5.png" alt="2º ano de namoro" className="timeline-image" />
-      <div className="timeline-text">
-        <h2>2º Ano de Namoro - 2018</h2>
-      </div>
-    </div>
-
-    <div className="timeline-block">
-      <img src="/foto6.png" alt="Pedido de casamento" className="timeline-image" />
-      <div className="timeline-text">
-        <h2>Pedido de Casamento - 12/06/2020</h2>
-      </div>
-    </div>
-
-    <div className="timeline-block reverse">
-      <img src="/foto9.png" alt="Preparativos casamento" className="timeline-image" />
-      <div className="timeline-text">
-        <h2>1º Ano de Noivado - 2020</h2>
-      </div>
-    </div>
-
-    <div className="timeline-block">
-      <img src="/foto10.png" alt="Preparativos casamento" className="timeline-image" />
-      <div className="timeline-text">
-        <h2>Preparativos Casamento</h2>
-      </div>
-    </div>
-  </main>
-</section>
-
-<section className="packing-section" id="o-que-levar">
-  <div className="packing-heading">
-    <p>L&amp;G</p>
-    <h2>O que levar</h2>
-    <span>
-      Preparamos uma lista simples para voce chegar tranquilo e aproveitar
-      cada momento da celebracao com a gente.
-    </span>
-  </div>
-
-  <div className="packing-content">
-    <div className="packing-note">
-      <p>Dica dos noivos</p>
-      <h3>Leve o essencial e venha leve</h3>
-      <span>
-        O clima pode variar ao longo do dia. Um casaco leve e um sapato
-        confortavel fazem toda a diferenca entre a cerimonia e a festa.
-      </span>
-    </div>
-
-    <div className="packing-grid">
-    <article className="packing-card">
-      <span>01</span>
-      <h3>Convite ou confirmacao</h3>
-      <p>
-        Tenha em maos o convite ou a confirmacao do registro. Isso ajuda
-        na organizacao da recepcao e do seu lugar na mesa.
-      </p>
-    </article>
-    <article className="packing-card">
-      <span>02</span>
-      <h3>Traje social elegante</h3>
-      <p>
-        Sugerimos look social elegante, com roupas confortaveis para
-        circular entre cerimonia, fotos e festa.
-      </p>
-    </article>
-    <article className="packing-card">
-      <span>03</span>
-      <h3>Calcado confortavel</h3>
-      <p>
-        Se possivel, leve um par extra ou um sapato mais confortavel para
-        usar depois da cerimonia.
-      </p>
-    </article>
-    <article className="packing-card">
-      <span>04</span>
-      <h3>Casaco ou xale leve</h3>
-      <p>
-        A noite pode esfriar no jardim. Um casaco, xale ou estola combina
-        com o clima e com as fotos.
-      </p>
-    </article>
-    <article className="packing-card">
-      <span>05</span>
-      <h3>Protetor solar e acessorios</h3>
-      <p>
-        Parte da celebracao acontece ao ar livre. Protetor solar, oculos
-        e um lenco sao bem-vindos.
-      </p>
-    </article>
-    <article className="packing-card">
-      <span>06</span>
-      <h3>Presente ou reserva online</h3>
-      <p>
-        Voce pode reservar presentes pelo Registro Convidado no site. Se
-        preferir levar algo pessoal, sera recebido com muito carinho.
-      </p>
-    </article>
-    </div>
-  </div>
-</section>
-      <section className="faq-section" id="duvidas">
-        <div className="faq-heading">
-          <p>L&amp;G</p>
-          <h2>Painel de Duvidas</h2>
-          <span>
-            Reunimos aqui as principais informacoes para voce chegar tranquilo,
-            encontrar o local e aproveitar cada momento da celebracao.
-          </span>
-        </div>
-
-        <div className="faq-layout">
-          <div className="faq-location">
-            <div className="faq-location-main">
-              <img src={venueImage} alt="Entrada do local do casamento" />
-            </div>
-            <div className="faq-location-gallery">
-              <img src={gridFourImage} alt="Area externa do local" />
-              <img src={previewBottomImage} alt="Espaco decorado do casamento" />
-            </div>
-            <div className="faq-address" id="localizacao">
-              <p>Local da cerimonia</p>
-              <h3>Villa Jardim Aurora</h3>
-              <span>
-                Rua das Acacias, 248 - Jardim das Flores, Salvador - BA
-              </span>
-            </div>
-          </div>
-
-          <div className="faq-grid">
-            <article className="faq-card">
-              <span>01</span>
-              <h3>Qual sera o horario?</h3>
-              <p>
-                A cerimonia esta marcada para as 16h. Sugerimos chegar com
-                alguns minutos de antecedencia para encontrar seu lugar com
-                calma.
-              </p>
-            </article>
-            <article className="faq-card">
-              <span>02</span>
-              <h3>Como chego ao local?</h3>
-              <p>
-                O endereco acima e uma localizacao ficticia para o projeto. A
-                referencia principal e a Villa Jardim Aurora, proxima a Praca
-                das Flores.
-              </p>
-            </article>
-            <article className="faq-card">
-              <span>03</span>
-              <h3>Qual traje devo usar?</h3>
-              <p>
-                O traje sugerido e social elegante. Escolha roupas confortaveis
-                para circular entre a cerimonia, as fotos e a festa.
-              </p>
-            </article>
-            <article className="faq-card">
-              <span>04</span>
-              <h3>Posso levar acompanhante?</h3>
-              <p>
-                Sim, se o acompanhante estiver indicado no seu convite. No
-                registro de convidado voce informa o nome de quem ira com voce.
-              </p>
-            </article>
-            <article className="faq-card">
-              <span>05</span>
-              <h3>Como confirmo presenca?</h3>
-              <p>
-                Use a area de Registro Convidado para confirmar sua presenca,
-                informar restricoes e deixar uma mensagem para os noivos.
-              </p>
-            </article>
-            <article className="faq-card">
-              <span>06</span>
-              <h3>Como funciona a lista de presentes?</h3>
-              <p>
-                A lista fica dentro do registro. Voce escolhe um ou mais
-                presentes disponiveis e o site reserva sua selecao.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
 
       <section className="guest-register" id="registro-convidado">
         <div className="guest-register-hero">
