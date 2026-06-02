@@ -880,6 +880,15 @@
   opacity: 0.48;
 }
 
+.registration-form .report-download-button {
+  margin: 0 auto;
+  min-height: 46px;
+  width: min(320px, 100%);
+  border: 1px solid rgba(54, 86, 58, 0.34);
+  background: #36563a;
+  color: #ffffff;
+}
+
 .form-feedback {
   margin: 4px 0 0;
   font-family: 'Times New Roman', Times, serif;

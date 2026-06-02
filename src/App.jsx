@@ -108,6 +108,221 @@ const giftImageById = Object.fromEntries(
   localGiftCatalog.map((gift) => [gift.id, gift.image]),
 )
 
+const escapeHtml = (value) =>
+  String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+
+const formatBooleanChoice = (value) => (value ? 'Sim' : 'Nao')
+
+const normalizeFilenamePart = (value) =>
+  String(value || 'convidado')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 48) || 'convidado'
+
+const buildGuestReportHtml = (report) => {
+  const giftNames = report.gifts.map((gift) => gift.name).join(', ') || 'Nao informado'
+  const giftPrices = report.gifts.map((gift) => gift.price).filter(Boolean).join(', ')
+  const giftLinks = report.gifts
+    .map((gift) => gift.storeUrl)
+    .filter((storeUrl) => storeUrl && storeUrl !== '#')
+    .join(', ')
+
+  const rows = [
+    ['NOME', report.guest.nome],
+    ['EMAIL', report.guest.email],
+    ['CONFIRMOU PRESENCA', report.guest.presenca === 'sim' ? 'Sim' : 'Nao'],
+    ['ACOMPANHANTE', formatBooleanChoice(report.guest.temAcompanhante)],
+    ['NOME_PARCEIRO', report.guest.nomeAcompanhante || 'Nao informado'],
+    ['CRIANCAS (QUANTIDADE)', report.guest.quantidadeCriancas],
+    ['PREFERENCIA CARDAPIO', report.guest.prato],
+    ['MENSAGEM', report.guest.mensagem || 'Nao informada'],
+    [report.gifts.length > 1 ? 'PRESENTES ESCOLHIDOS' : 'PRESENTE ESCOLHIDO', giftNames],
+    ['VALOR DO PRESENTE', giftPrices || 'Nao informado'],
+    ['LINK DO PRESENTE', giftLinks || 'Nao informado'],
+  ]
+
+  const summaryRows = [
+    ['Convidado', report.guest.nome],
+    ['Email', report.guest.email],
+    ['Presenca', report.guest.presenca === 'sim' ? 'Confirmada' : 'Nao comparecera'],
+    ['Nome do Parceiro', report.guest.nomeAcompanhante || 'Nao informado'],
+    ['Quantidade de Criancas', report.guest.quantidadeCriancas],
+    ['Preferencia de Cardapio', report.guest.prato],
+    [report.gifts.length > 1 ? 'Presentes Escolhidos' : 'Presente Escolhido', giftNames],
+  ]
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #101010;
+      background: #ffffff;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .sheet {
+      width: 1180px;
+      margin: 0 auto;
+      padding: 42px 28px 28px;
+    }
+    .title {
+      color: #145c35;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .divider {
+      color: #9fbf9f;
+      font-size: 28px;
+      text-align: center;
+    }
+    .subtitle {
+      padding: 16px 0 30px;
+      font-size: 21px;
+      font-style: italic;
+      text-align: center;
+    }
+    .section {
+      margin-top: 20px;
+      border: 1px solid #cfd6cc;
+    }
+    .section-title {
+      padding: 12px;
+      background: #0f6237;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .label {
+      width: 34%;
+      padding: 13px 22px;
+      border: 1px solid #d7ddd4;
+      background: #eef5eb;
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .value {
+      padding: 13px 16px;
+      border: 1px solid #d7ddd4;
+      font-size: 18px;
+    }
+    .summary-title {
+      padding: 14px 22px;
+      border: 1px solid #d7ddd4;
+      background: #e7f1e2;
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .summary-body {
+      border: 1px solid #d7ddd4;
+    }
+    .summary-line {
+      padding: 9px 22px;
+      font-size: 18px;
+    }
+    .summary-label {
+      color: #0f6237;
+      font-weight: 800;
+    }
+    .gift-mark {
+      color: #0f6237;
+      font-size: 72px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .thanks {
+      margin-top: 20px;
+      padding: 14px 22px;
+      border: 1px solid #cfd6cc;
+      border-radius: 8px;
+      background: #e7f1e2;
+      color: #145c35;
+      font-size: 19px;
+      font-style: italic;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <table>
+      <tr><td class="title" colspan="2">Relatorio Personalizado do Convidado</td></tr>
+      <tr><td class="divider" colspan="2">──────────  presente  ──────────</td></tr>
+      <tr><td class="subtitle" colspan="2">Detalhes do convidado e suas preferencias</td></tr>
+    </table>
+
+    <table class="section">
+      <tr><td class="section-title" colspan="2">Dados do Convidado</td></tr>
+      ${rows
+        .map(
+          ([label, value]) =>
+            `<tr><td class="label">${escapeHtml(label)}</td><td class="value">${escapeHtml(value)}</td></tr>`,
+        )
+        .join('')}
+    </table>
+
+    <table class="section">
+      <tr><td class="summary-title" colspan="2">Resumo</td></tr>
+      <tr>
+        <td class="summary-body">
+          <table>
+            ${summaryRows
+              .map(
+                ([label, value]) =>
+                  `<tr><td class="summary-line"><span class="summary-label">${escapeHtml(
+                    label,
+                  )}:</span> ${escapeHtml(value)}</td></tr>`,
+              )
+              .join('')}
+          </table>
+        </td>
+        <td class="gift-mark">L&amp;G</td>
+      </tr>
+    </table>
+
+    <div class="thanks">Agradecemos sua presenca! Estamos felizes em te-los conosco.</div>
+  </div>
+</body>
+</html>`
+}
+
+const downloadGuestReport = (report) => {
+  const filename = `relatorio_convidado_${normalizeFilenamePart(report.guest.nome)}.xls`
+  const html = buildGuestReportHtml(report)
+  const blob = new Blob(['\ufeff', html], {
+    type: 'application/vnd.ms-excel;charset=utf-8',
+  })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
+
 function WeddingDetailsPage({ onBack, onRegister, onQuestions }) {
   return (
     <main className="wedding-page">
@@ -515,6 +730,7 @@ function App() {
   const [isSubmittingRegistration, setIsSubmittingRegistration] = useState(false)
   const [registrationMessage, setRegistrationMessage] = useState('')
   const [registrationError, setRegistrationError] = useState('')
+  const [lastRegistrationReport, setLastRegistrationReport] = useState(null)
 
   const hydrateGifts = (giftRecords) =>
     giftRecords.map((gift, index) => {
@@ -642,6 +858,7 @@ function App() {
     if (selectedGifts.length === 0) {
       setRegistrationMessage('')
       setRegistrationError('Escolha pelo menos um presente antes de enviar.')
+      setLastRegistrationReport(null)
       return
     }
 
@@ -657,10 +874,14 @@ function App() {
       prato: formData.get('prato')?.toString() ?? '',
       mensagem: formData.get('mensagem')?.toString().trim() ?? '',
     }
+    const selectedGiftRecords = gifts.filter((gift) =>
+      selectedGifts.includes(gift.id),
+    )
 
     setIsSubmittingRegistration(true)
     setRegistrationMessage('')
     setRegistrationError('')
+    setLastRegistrationReport(null)
 
     try {
       await submitGuestRegistration({
@@ -675,6 +896,11 @@ function App() {
       setRegistrationMessage(
         'Registro enviado e presentes reservados com sucesso.',
       )
+      setLastRegistrationReport({
+        guest: guestData,
+        gifts: selectedGiftRecords,
+        createdAt: new Date().toISOString(),
+      })
     } catch (error) {
       if (error instanceof ReservedGiftError) {
         setRegistrationError(
@@ -682,10 +908,12 @@ function App() {
         )
         await refreshGiftCatalog()
         setSelectedGifts([])
+        setLastRegistrationReport(null)
       } else {
         setRegistrationError(
           'Nao foi possivel salvar o registro agora. Tente novamente.',
         )
+        setLastRegistrationReport(null)
       }
     } finally {
       setIsSubmittingRegistration(false)
@@ -865,6 +1093,15 @@ function App() {
 
             {registrationMessage ? (
               <p className="form-feedback is-success">{registrationMessage}</p>
+            ) : null}
+            {lastRegistrationReport ? (
+              <button
+                className="report-download-button"
+                type="button"
+                onClick={() => downloadGuestReport(lastRegistrationReport)}
+              >
+                Baixar relatorio Excel
+              </button>
             ) : null}
             {registrationError ? (
               <p className="form-feedback is-error">{registrationError}</p>
