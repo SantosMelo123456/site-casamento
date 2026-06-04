@@ -368,6 +368,39 @@ const downloadGuestReport = (report) => {
   URL.revokeObjectURL(url)
 }
 
+const mapRegistrationToGuestReport = (registration) => {
+  const gifts = (registration.presentes ?? []).map((gift) => {
+    const giftName = gift.nome ?? gift.name ?? ''
+    const localGift = giftByName[giftName.toLowerCase()]
+
+    return {
+      name: giftName,
+      price:
+        typeof gift.preco === 'string'
+          ? gift.preco
+          : typeof gift.price === 'string'
+            ? gift.price
+            : localGift?.price ?? '',
+      storeUrl: gift.store_url ?? gift.storeUrl ?? localGift?.storeUrl ?? '#',
+    }
+  })
+
+  return {
+    guest: {
+      nome: registration.nome ?? '',
+      email: registration.email ?? '',
+      presenca: registration.confirmou_presenca ? 'sim' : 'nao',
+      temAcompanhante: Boolean(registration.nome_parceiro),
+      nomeAcompanhante: registration.nome_parceiro ?? '',
+      quantidadeCriancas: registration.criancas ?? 0,
+      prato: registration.preferencia_cardapio ?? '',
+      mensagem: registration.mensagem ?? '',
+    },
+    gifts,
+    createdAt: registration.criado_em ?? new Date().toISOString(),
+  }
+}
+
 function WeddingDetailsPage({ onBack, onRegister, onQuestions }) {
   return (
     <main className="wedding-page">
@@ -839,6 +872,7 @@ function GuestsPage({ onBack }) {
                   <th>Presentes escolhidos</th>
                   <th>Parceiro</th>
                   <th>Cadastro</th>
+                  <th>Relatorio</th>
                 </tr>
               </thead>
               <tbody>
@@ -848,11 +882,28 @@ function GuestsPage({ onBack }) {
                     'Sem presente vinculado'
 
                   return (
-                    <tr key={guest.id}>
-                      <td>{guest.nome}</td>
-                      <td>{giftNames}</td>
-                      <td>{guest.nome_parceiro || 'Sem parceiro'}</td>
-                      <td>{formatRegistrationDate(guest.criado_em)}</td>
+                    <tr key={guest.id} className="guests-table-row">
+                      <td data-label="Nome">
+                        <span className="guests-table-name">{guest.nome}</span>
+                      </td>
+                      <td data-label="Presentes">{giftNames}</td>
+                      <td data-label="Parceiro">
+                        {guest.nome_parceiro || 'Sem parceiro'}
+                      </td>
+                      <td data-label="Cadastro">
+                        {formatRegistrationDate(guest.criado_em)}
+                      </td>
+                      <td data-label="Relatorio">
+                        <button
+                          type="button"
+                          className="guests-report-download-button"
+                          onClick={() =>
+                            downloadGuestReport(mapRegistrationToGuestReport(guest))
+                          }
+                        >
+                          Baixar planilha
+                        </button>
+                      </td>
                     </tr>
                   )
                 })}
