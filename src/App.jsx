@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import previewImage from './assets/preview.webp'
 import downloadImage from './assets/download.webp'
@@ -23,11 +23,14 @@ import giftShellTableLampImage from './assets/gift-shell-table-lamp.jpg'
 import giftCeramicFloralBowlImage from './assets/gift-ceramic-floral-bowl.jpg'
 import {
   ReservedGiftError,
+  deleteGuestRegistration,
   ensureGiftCatalog,
+  isGiftAvailable,
   listGuestRegistrations,
   listGifts,
   submitGuestRegistration,
   subscribeToGuestRegistrations,
+  updateGuestRegistrationWithGifts,
 } from './services/guestRegistry'
 import {
   enableSmoothAnchorNavigation,
@@ -162,6 +165,47 @@ const formatRegistrationDate = (value) => {
     timeStyle: 'short',
   }).format(new Date(value))
 }
+
+const normalizeSearchText = (value) =>
+  String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+
+const guestMatchesSearch = (guest, query) => {
+  if (!query) return true
+
+  const searchableText = [
+    guest.nome,
+    guest.email,
+    guest.nome_parceiro,
+    guest.presentes?.map((gift) => gift.nome).join(' '),
+  ]
+    .filter(Boolean)
+    .map(normalizeSearchText)
+    .join(' ')
+
+  return searchableText.includes(query)
+}
+
+const mapGuestToEditForm = (guest) => ({
+  nome: guest.nome ?? '',
+  email: guest.email ?? '',
+  presenca: guest.confirmou_presenca ? 'sim' : 'nao',
+  temAcompanhante: guest.nome_parceiro ? 'sim' : 'nao',
+  nomeAcompanhante: guest.nome_parceiro ?? '',
+  criancas: String(guest.criancas ?? 0),
+  prato: guest.preferencia_cardapio ?? '',
+  selectedGiftIds: guest.presentes?.map((gift) => gift.id) ?? [],
+})
+
+const mapCatalogGift = (gift) => ({
+  id: gift.id,
+  nome: gift.nome ?? gift.name ?? 'Presente',
+  disponivel: isGiftAvailable(gift),
+  convidado_id: gift.convidado_id ?? null,
+})
 
 const normalizeFilenamePart = (value) =>
   String(value || 'convidado')
@@ -803,11 +847,36 @@ function GuestsPage({ onBack }) {
   const [guestRegistrations, setGuestRegistrations] = useState([])
   const [isLoadingGuests, setIsLoadingGuests] = useState(true)
   const [guestsError, setGuestsError] = useState('')
+  const [guestSearchQuery, setGuestSearchQuery] = useState('')
+  const [editingGuestId, setEditingGuestId] = useState(null)
+  const [editForm, setEditForm] = useState(null)
+  const [isSavingEdit, setIsSavingEdit] = useState(false)
+  const [editError, setEditError] = useState('')
+  const [editSuccess, setEditSuccess] = useState('')
+  const [catalogGifts, setCatalogGifts] = useState([])
+  const [isLoadingCatalogGifts, setIsLoadingCatalogGifts] = useState(false)
+  const [deletingGuestId, setDeletingGuestId] = useState(null)
+
+  const normalizedGuestSearch = normalizeSearchText(guestSearchQuery)
+
+  const filteredGuestRegistrations = useMemo(
+    () =>
+      guestRegistrations.filter((guest) =>
+        guestMatchesSearch(guest, normalizedGuestSearch),
+      ),
+    [guestRegistrations, normalizedGuestSearch],
+  )
+
+  const loadGuests = async () => {
+    const registrations = await listGuestRegistrations()
+    setGuestRegistrations(registrations)
+    setGuestsError('')
+  }
 
   useEffect(() => {
     let isMounted = true
 
-    const loadGuests = async () => {
+    const initializeGuests = async () => {
       try {
         const registrations = await listGuestRegistrations()
 
@@ -826,14 +895,144 @@ function GuestsPage({ onBack }) {
       }
     }
 
-    loadGuests()
-    const unsubscribe = subscribeToGuestRegistrations(loadGuests)
+    initializeGuests()
+    const unsubscribe = subscribeToGuestRegistrations(() => {
+      loadGuests().catch(() => {
+        setGuestsError('Nao foi possivel carregar os convidados agora.')
+      })
+    })
 
     return () => {
       isMounted = false
       unsubscribe()
     }
   }, [])
+
+  const loadCatalogGifts = async () => {
+    setIsLoadingCatalogGifts(true)
+
+    try {
+      const gifts = await listGifts()
+      setCatalogGifts(gifts.map(mapCatalogGift))
+    } catch {
+      setCatalogGifts([])
+    } finally {
+      setIsLoadingCatalogGifts(false)
+    }
+  }
+
+  const startEditingGuest = async (guest) => {
+    setEditingGuestId(guest.id)
+    setEditForm(mapGuestToEditForm(guest))
+    setEditError('')
+    setEditSuccess('')
+    await loadCatalogGifts()
+  }
+
+  const cancelEditingGuest = () => {
+    setEditingGuestId(null)
+    setEditForm(null)
+    setEditError('')
+    setCatalogGifts([])
+  }
+
+  const handleEditFieldChange = (field, value) => {
+    setEditForm((currentForm) => {
+      if (!currentForm) return currentForm
+
+      const nextForm = { ...currentForm, [field]: value }
+
+      if (field === 'temAcompanhante' && value === 'nao') {
+        nextForm.nomeAcompanhante = ''
+      }
+
+      return nextForm
+    })
+  }
+
+  const toggleEditGift = (giftId) => {
+    setEditForm((currentForm) => {
+      if (!currentForm) return currentForm
+
+      const catalogGift = catalogGifts.find((gift) => gift.id === giftId)
+      const isSelected = currentForm.selectedGiftIds.includes(giftId)
+      const isOwnedByGuest = catalogGift?.convidado_id === editingGuestId
+
+      if (!isSelected && catalogGift && !catalogGift.disponivel && !isOwnedByGuest) {
+        return currentForm
+      }
+
+      const selectedGiftIds = isSelected
+        ? currentForm.selectedGiftIds.filter((id) => id !== giftId)
+        : [...currentForm.selectedGiftIds, giftId]
+
+      return { ...currentForm, selectedGiftIds }
+    })
+  }
+
+  const handleEditSubmit = async (event) => {
+    event.preventDefault()
+
+    if (!editingGuestId || !editForm) return
+
+    if (editForm.selectedGiftIds.length === 0) {
+      setEditError('Selecione pelo menos um presente.')
+      return
+    }
+
+    setIsSavingEdit(true)
+    setEditError('')
+    setEditSuccess('')
+
+    try {
+      await updateGuestRegistrationWithGifts(
+        editingGuestId,
+        editForm,
+        editForm.selectedGiftIds,
+      )
+      await loadGuests()
+      setEditingGuestId(null)
+      setEditForm(null)
+      setCatalogGifts([])
+      setEditSuccess('Convidado atualizado com sucesso.')
+    } catch (error) {
+      if (error instanceof ReservedGiftError) {
+        setEditError(
+          `Estes presentes ja estao reservados: ${error.giftNames.join(', ')}.`,
+        )
+      } else {
+        setEditError('Nao foi possivel salvar as alteracoes. Tente novamente.')
+      }
+    } finally {
+      setIsSavingEdit(false)
+    }
+  }
+
+  const handleDeleteGuest = async (guest) => {
+    const confirmed = window.confirm(
+      `Excluir o cadastro de ${guest.nome}? Os presentes reservados voltarao a ficar disponiveis.`,
+    )
+
+    if (!confirmed) return
+
+    setDeletingGuestId(guest.id)
+    setEditError('')
+    setEditSuccess('')
+
+    try {
+      if (editingGuestId === guest.id) {
+        cancelEditingGuest()
+      }
+
+      await deleteGuestRegistration(guest.id)
+      await loadGuests()
+      setEditSuccess('Convidado excluido com sucesso.')
+    } catch {
+      setEditError('Nao foi possivel excluir o convidado. Tente novamente.')
+    } finally {
+      setDeletingGuestId(null)
+    }
+  }
 
   return (
     <main className="guests-page">
@@ -864,6 +1063,57 @@ function GuestsPage({ onBack }) {
         ) : null}
 
         {!isLoadingGuests && !guestsError && guestRegistrations.length > 0 ? (
+          <div className="guests-search">
+            <label className="guests-search-label" htmlFor="guest-search">
+              Buscar convidado
+            </label>
+            <div className="guests-search-row">
+              <input
+                id="guest-search"
+                className="guests-search-input"
+                type="search"
+                value={guestSearchQuery}
+                onChange={(event) => setGuestSearchQuery(event.target.value)}
+                placeholder="Nome, e-mail ou parceiro..."
+                autoComplete="off"
+              />
+              {guestSearchQuery ? (
+                <button
+                  type="button"
+                  className="guests-search-clear"
+                  onClick={() => setGuestSearchQuery('')}
+                >
+                  Limpar
+                </button>
+              ) : null}
+            </div>
+            <p className="guests-search-meta">
+              {filteredGuestRegistrations.length} de {guestRegistrations.length}{' '}
+              convidado{guestRegistrations.length === 1 ? '' : 's'}
+            </p>
+          </div>
+        ) : null}
+
+        {!isLoadingGuests &&
+        !guestsError &&
+        guestRegistrations.length > 0 &&
+        filteredGuestRegistrations.length === 0 ? (
+          <p className="guests-feedback">
+            Nenhum convidado encontrado para &quot;{guestSearchQuery}&quot;.
+          </p>
+        ) : null}
+
+        {editSuccess ? (
+          <p className="guests-feedback guests-feedback-success">{editSuccess}</p>
+        ) : null}
+
+        {editError && !editingGuestId ? (
+          <p className="guests-feedback is-error">{editError}</p>
+        ) : null}
+
+        {!isLoadingGuests &&
+        !guestsError &&
+        filteredGuestRegistrations.length > 0 ? (
           <div className="guests-table-wrap">
             <table className="guests-table">
               <thead>
@@ -872,39 +1122,239 @@ function GuestsPage({ onBack }) {
                   <th>Presentes escolhidos</th>
                   <th>Parceiro</th>
                   <th>Cadastro</th>
-                  <th>Relatorio</th>
+                  <th>Acoes</th>
                 </tr>
               </thead>
               <tbody>
-                {guestRegistrations.map((guest) => {
+                {filteredGuestRegistrations.map((guest) => {
                   const giftNames =
                     guest.presentes.map((gift) => gift.nome).join(', ') ||
                     'Sem presente vinculado'
+                  const isEditing = editingGuestId === guest.id
 
                   return (
-                    <tr key={guest.id} className="guests-table-row">
-                      <td data-label="Nome">
-                        <span className="guests-table-name">{guest.nome}</span>
-                      </td>
-                      <td data-label="Presentes">{giftNames}</td>
-                      <td data-label="Parceiro">
-                        {guest.nome_parceiro || 'Sem parceiro'}
-                      </td>
-                      <td data-label="Cadastro">
-                        {formatRegistrationDate(guest.criado_em)}
-                      </td>
-                      <td data-label="Relatorio">
-                        <button
-                          type="button"
-                          className="guests-report-download-button"
-                          onClick={() =>
-                            downloadGuestReport(mapRegistrationToGuestReport(guest))
-                          }
-                        >
-                          Baixar planilha
-                        </button>
-                      </td>
-                    </tr>
+                    <Fragment key={guest.id}>
+                      <tr className="guests-table-row">
+                        <td data-label="Nome">
+                          <span className="guests-table-name">{guest.nome}</span>
+                        </td>
+                        <td data-label="Presentes">{giftNames}</td>
+                        <td data-label="Parceiro">
+                          {guest.nome_parceiro || 'Sem parceiro'}
+                        </td>
+                        <td data-label="Cadastro">
+                          {formatRegistrationDate(guest.criado_em)}
+                        </td>
+                        <td data-label="Acoes">
+                          <div className="guests-table-actions">
+                            <button
+                              type="button"
+                              className="guests-edit-button"
+                              onClick={() => startEditingGuest(guest)}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              type="button"
+                              className="guests-report-download-button"
+                              onClick={() =>
+                                downloadGuestReport(
+                                  mapRegistrationToGuestReport(guest),
+                                )
+                              }
+                            >
+                              Baixar planilha
+                            </button>
+                            <button
+                              type="button"
+                              className="guests-delete-button"
+                              onClick={() => handleDeleteGuest(guest)}
+                              disabled={deletingGuestId === guest.id}
+                            >
+                              {deletingGuestId === guest.id
+                                ? 'Excluindo...'
+                                : 'Excluir'}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      {isEditing && editForm ? (
+                        <tr className="guests-edit-row">
+                          <td colSpan={5}>
+                            <form
+                              className="guests-edit-form"
+                              onSubmit={handleEditSubmit}
+                            >
+                              <h2>Editar convidado</h2>
+                              <div className="guests-edit-grid">
+                                <label>
+                                  Nome completo
+                                  <input
+                                    type="text"
+                                    value={editForm.nome}
+                                    onChange={(event) =>
+                                      handleEditFieldChange('nome', event.target.value)
+                                    }
+                                    required
+                                  />
+                                </label>
+                                <label>
+                                  E-mail
+                                  <input
+                                    type="email"
+                                    value={editForm.email}
+                                    onChange={(event) =>
+                                      handleEditFieldChange('email', event.target.value)
+                                    }
+                                    required
+                                  />
+                                </label>
+                                <label>
+                                  Presenca
+                                  <select
+                                    value={editForm.presenca}
+                                    onChange={(event) =>
+                                      handleEditFieldChange('presenca', event.target.value)
+                                    }
+                                    required
+                                  >
+                                    <option value="sim">Confirmada</option>
+                                    <option value="nao">Nao comparecera</option>
+                                  </select>
+                                </label>
+                                <label>
+                                  Acompanhante
+                                  <select
+                                    value={editForm.temAcompanhante}
+                                    onChange={(event) =>
+                                      handleEditFieldChange(
+                                        'temAcompanhante',
+                                        event.target.value,
+                                      )
+                                    }
+                                    required
+                                  >
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Nao</option>
+                                  </select>
+                                </label>
+                                {editForm.temAcompanhante === 'sim' ? (
+                                  <label>
+                                    Nome do acompanhante
+                                    <input
+                                      type="text"
+                                      value={editForm.nomeAcompanhante}
+                                      onChange={(event) =>
+                                        handleEditFieldChange(
+                                          'nomeAcompanhante',
+                                          event.target.value,
+                                        )
+                                      }
+                                      required
+                                    />
+                                  </label>
+                                ) : null}
+                                <label>
+                                  Criancas
+                                  <select
+                                    value={editForm.criancas}
+                                    onChange={(event) =>
+                                      handleEditFieldChange('criancas', event.target.value)
+                                    }
+                                  >
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                  </select>
+                                </label>
+                                <label>
+                                  Prato
+                                  <select
+                                    value={editForm.prato}
+                                    onChange={(event) =>
+                                      handleEditFieldChange('prato', event.target.value)
+                                    }
+                                    required
+                                  >
+                                    <option value="vegetariano">Vegetariano</option>
+                                    <option value="carnivoro">Carnivoro</option>
+                                  </select>
+                                </label>
+                              </div>
+                              <fieldset className="guests-edit-gifts">
+                                <legend>Presentes reservados</legend>
+                                <p>Marque um ou mais presentes para este convidado.</p>
+                                {isLoadingCatalogGifts ? (
+                                  <p className="guests-edit-gifts-loading">
+                                    Carregando presentes...
+                                  </p>
+                                ) : (
+                                  <div className="guests-edit-gifts-list">
+                                    {catalogGifts.map((gift) => {
+                                      const isSelected = editForm.selectedGiftIds.includes(
+                                        gift.id,
+                                      )
+                                      const isOwnedByGuest =
+                                        gift.convidado_id === editingGuestId
+                                      const isDisabled =
+                                        !isSelected &&
+                                        !gift.disponivel &&
+                                        !isOwnedByGuest
+
+                                      return (
+                                        <label
+                                          key={gift.id}
+                                          className={`guests-edit-gift-option ${
+                                            isDisabled ? 'is-disabled' : ''
+                                          } ${isSelected ? 'is-selected' : ''}`}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            checked={isSelected}
+                                            disabled={isDisabled}
+                                            onChange={() => toggleEditGift(gift.id)}
+                                          />
+                                          <span>{gift.nome}</span>
+                                          {isDisabled ? (
+                                            <em>Reservado</em>
+                                          ) : isOwnedByGuest && isSelected ? (
+                                            <em>Atual</em>
+                                          ) : gift.disponivel ? (
+                                            <em>Disponivel</em>
+                                          ) : null}
+                                        </label>
+                                      )
+                                    })}
+                                  </div>
+                                )}
+                              </fieldset>
+                              {editError ? (
+                                <p className="guests-edit-feedback is-error">
+                                  {editError}
+                                </p>
+                              ) : null}
+                              <div className="guests-edit-actions">
+                                <button
+                                  type="button"
+                                  className="guests-edit-cancel"
+                                  onClick={cancelEditingGuest}
+                                  disabled={isSavingEdit}
+                                >
+                                  Cancelar
+                                </button>
+                                <button
+                                  type="submit"
+                                  className="guests-edit-save"
+                                  disabled={isSavingEdit}
+                                >
+                                  {isSavingEdit ? 'Salvando...' : 'Salvar alteracoes'}
+                                </button>
+                              </div>
+                            </form>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </Fragment>
                   )
                 })}
               </tbody>

@@ -148,11 +148,111 @@ async function submitGuestRegistration({ guestData, selectedGiftIds }) {
   return guest.id
 }
 
+async function updateGuestRegistration(guestId, guestData) {
+  const { data, error } = await supabase
+    .from('convidados')
+    .update({
+      nome: guestData.nome,
+      email: guestData.email,
+      confirmou_presenca: guestData.presenca === 'sim',
+      nome_parceiro:
+        guestData.temAcompanhante === 'sim' ? guestData.nomeAcompanhante : null,
+      criancas: Number(guestData.criancas ?? 0),
+      preferencia_cardapio: guestData.prato,
+    })
+    .eq('id', guestId)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+async function updateGuestRegistrationWithGifts(
+  guestId,
+  guestData,
+  selectedGiftIds,
+) {
+  if (!selectedGiftIds.length) {
+    throw new Error('At least one gift must be selected.')
+  }
+
+  const { data: linkedGifts, error: linkedGiftsError } = await supabase
+    .from('presentes')
+    .select('*')
+    .eq('convidado_id', guestId)
+
+  if (linkedGiftsError) throw linkedGiftsError
+
+  const currentGiftIds = linkedGifts.map((gift) => gift.id)
+  const giftsToRelease = currentGiftIds.filter((id) => !selectedGiftIds.includes(id))
+  const giftsToAssign = selectedGiftIds.filter((id) => !currentGiftIds.includes(id))
+
+  if (giftsToAssign.length > 0) {
+    const { data: assignGifts, error: assignGiftsError } = await supabase
+      .from('presentes')
+      .select('*')
+      .in('id', giftsToAssign)
+
+    if (assignGiftsError) throw assignGiftsError
+
+    const unavailableGiftNames = assignGifts
+      .filter((gift) => !isGiftAvailable(gift))
+      .map((gift) => gift.nome)
+
+    if (unavailableGiftNames.length > 0) {
+      throw new ReservedGiftError(unavailableGiftNames)
+    }
+  }
+
+  await updateGuestRegistration(guestId, guestData)
+
+  if (giftsToRelease.length > 0) {
+    const { error: releaseError } = await supabase
+      .from('presentes')
+      .update({ disponivel: true, convidado_id: null })
+      .in('id', giftsToRelease)
+
+    if (releaseError) throw releaseError
+  }
+
+  if (giftsToAssign.length > 0) {
+    const { error: assignError } = await supabase
+      .from('presentes')
+      .update({ disponivel: false, convidado_id: guestId })
+      .in('id', giftsToAssign)
+
+    if (assignError) throw assignError
+  }
+
+  return guestId
+}
+
+async function deleteGuestRegistration(guestId) {
+  const { error: releaseError } = await supabase
+    .from('presentes')
+    .update({ disponivel: true, convidado_id: null })
+    .eq('convidado_id', guestId)
+
+  if (releaseError) throw releaseError
+
+  const { error: deleteError } = await supabase
+    .from('convidados')
+    .delete()
+    .eq('id', guestId)
+
+  if (deleteError) throw deleteError
+}
+
 export {
   ReservedGiftError,
+  deleteGuestRegistration,
   ensureGiftCatalog,
+  isGiftAvailable,
   listGifts,
   listGuestRegistrations,
   submitGuestRegistration,
   subscribeToGuestRegistrations,
+  updateGuestRegistration,
+  updateGuestRegistrationWithGifts,
 }
