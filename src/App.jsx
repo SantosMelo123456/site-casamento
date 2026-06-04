@@ -24,8 +24,10 @@ import giftCeramicFloralBowlImage from './assets/gift-ceramic-floral-bowl.jpg'
 import {
   ReservedGiftError,
   ensureGiftCatalog,
+  listGuestRegistrations,
   listGifts,
   submitGuestRegistration,
+  subscribeToGuestRegistrations,
 } from './services/guestRegistry'
 import {
   enableSmoothAnchorNavigation,
@@ -151,6 +153,15 @@ const escapeHtml = (value) =>
     .replaceAll("'", '&#039;')
 
 const formatBooleanChoice = (value) => (value ? 'Sim' : 'Nao')
+
+const formatRegistrationDate = (value) => {
+  if (!value) return 'Data nao informada'
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(value))
+}
 
 const normalizeFilenamePart = (value) =>
   String(value || 'convidado')
@@ -755,6 +766,105 @@ function QuestionsPage({ onBack }) {
   )
 }
 
+function GuestsPage({ onBack }) {
+  const [guestRegistrations, setGuestRegistrations] = useState([])
+  const [isLoadingGuests, setIsLoadingGuests] = useState(true)
+  const [guestsError, setGuestsError] = useState('')
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadGuests = async () => {
+      try {
+        const registrations = await listGuestRegistrations()
+
+        if (!isMounted) return
+
+        setGuestRegistrations(registrations)
+        setGuestsError('')
+      } catch {
+        if (!isMounted) return
+
+        setGuestsError('Nao foi possivel carregar os convidados agora.')
+      } finally {
+        if (isMounted) {
+          setIsLoadingGuests(false)
+        }
+      }
+    }
+
+    loadGuests()
+    const unsubscribe = subscribeToGuestRegistrations(loadGuests)
+
+    return () => {
+      isMounted = false
+      unsubscribe()
+    }
+  }, [])
+
+  return (
+    <main className="guests-page">
+      <button className="page-back" type="button" onClick={onBack}>
+        Voltar
+      </button>
+
+      <section className="guests-section">
+        <div className="guests-heading">
+          <p>L&amp;G</p>
+          <h1>Convidados</h1>
+          <span>
+            Lista em tempo real dos convidados cadastrados e dos presentes
+            reservados por cada um.
+          </span>
+        </div>
+
+        {isLoadingGuests ? (
+          <p className="guests-feedback">Carregando convidados...</p>
+        ) : null}
+
+        {guestsError ? (
+          <p className="guests-feedback is-error">{guestsError}</p>
+        ) : null}
+
+        {!isLoadingGuests && !guestsError && guestRegistrations.length === 0 ? (
+          <p className="guests-feedback">Nenhum convidado cadastrado ainda.</p>
+        ) : null}
+
+        {!isLoadingGuests && !guestsError && guestRegistrations.length > 0 ? (
+          <div className="guests-table-wrap">
+            <table className="guests-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Presentes escolhidos</th>
+                  <th>Parceiro</th>
+                  <th>Cadastro</th>
+                </tr>
+              </thead>
+              <tbody>
+                {guestRegistrations.map((guest) => {
+                  const giftNames =
+                    guest.presentes.map((gift) => gift.nome).join(', ') ||
+                    'Sem presente vinculado'
+
+                  return (
+                    <tr key={guest.id}>
+                      <td>{guest.nome}</td>
+                      <td>{giftNames}</td>
+                      <td>{guest.nome_parceiro || 'Sem parceiro'}</td>
+                      <td>{formatRegistrationDate(guest.criado_em)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+      </section>
+    </main>
+  )
+}
+
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home')
   const [hasCompanion, setHasCompanion] = useState('')
@@ -806,6 +916,7 @@ function App() {
       '#nossa-historia': 'nossa-historia',
       '#o-que-levar': 'o-que-levar',
       '#duvidas': 'duvidas',
+      '#convidados': 'convidados',
     }
 
     const syncScreenWithHash = () => {
@@ -978,6 +1089,10 @@ function App() {
 
   if (currentScreen === 'duvidas') {
     return <QuestionsPage onBack={() => navigateToScreen('home')} />
+  }
+
+  if (currentScreen === 'convidados') {
+    return <GuestsPage onBack={() => navigateToScreen('home')} />
   }
 
   if (currentScreen === 'registro') {
@@ -1184,6 +1299,9 @@ function App() {
             </a>
             <a href="#duvidas" onClick={() => navigateToScreen('duvidas')}>
               Painel de Duvidas
+            </a>
+            <a href="#convidados" onClick={() => navigateToScreen('convidados')}>
+              Convidados
             </a>
           </nav>
         </header>

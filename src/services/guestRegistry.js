@@ -28,6 +28,56 @@ async function listGifts() {
   return data
 }
 
+async function listGuestRegistrations() {
+  const { data: guests, error: guestsError } = await supabase
+    .from('convidados')
+    .select('*')
+    .order('criado_em', { ascending: false, nullsFirst: false })
+
+  if (guestsError) throw guestsError
+
+  const { data: gifts, error: giftsError } = await supabase
+    .from('presentes')
+    .select('*')
+    .not('convidado_id', 'is', null)
+
+  if (giftsError) throw giftsError
+
+  const giftsByGuestId = gifts.reduce((groupedGifts, gift) => {
+    const guestId = gift.convidado_id
+
+    return {
+      ...groupedGifts,
+      [guestId]: [...(groupedGifts[guestId] ?? []), gift],
+    }
+  }, {})
+
+  return guests.map((guest) => ({
+    ...guest,
+    presentes: giftsByGuestId[guest.id] ?? [],
+  }))
+}
+
+function subscribeToGuestRegistrations(onChange) {
+  const channel = supabase
+    .channel('guest-registration-list')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'convidados' },
+      onChange,
+    )
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'presentes' },
+      onChange,
+    )
+    .subscribe()
+
+  return () => {
+    supabase.removeChannel(channel)
+  }
+}
+
 async function ensureGiftCatalog(defaultGifts) {
   const existingGifts = await listGifts()
   const existingGiftNames = new Set(
@@ -90,7 +140,7 @@ async function submitGuestRegistration({ guestData, selectedGiftIds }) {
 
   const { error: updateError } = await supabase
     .from('presentes')
-    .update({ disponivel: false })
+    .update({ disponivel: false, convidado_id: guest.id })
     .in('id', selectedGiftIds)
 
   if (updateError) throw updateError
@@ -98,4 +148,11 @@ async function submitGuestRegistration({ guestData, selectedGiftIds }) {
   return guest.id
 }
 
-export { ReservedGiftError, ensureGiftCatalog, listGifts, submitGuestRegistration }
+export {
+  ReservedGiftError,
+  ensureGiftCatalog,
+  listGifts,
+  listGuestRegistrations,
+  submitGuestRegistration,
+  subscribeToGuestRegistrations,
+}
