@@ -15,6 +15,10 @@ function isGiftAvailable(gift) {
   )
 }
 
+function normalizeGiftName(name) {
+  return name?.toString().trim().toLowerCase()
+}
+
 async function listGifts() {
   const { data, error } = await supabase
     .from('presentes')
@@ -26,15 +30,27 @@ async function listGifts() {
 
 async function ensureGiftCatalog(defaultGifts) {
   const existingGifts = await listGifts()
-  if (existingGifts.length > 0) return existingGifts
+  const existingGiftNames = new Set(
+    existingGifts.map((gift) => normalizeGiftName(gift.nome ?? gift.name)),
+  )
+  const giftsToInsert =
+    existingGifts.length === 0
+      ? defaultGifts
+      : defaultGifts.filter(
+          (gift) =>
+            gift.syncToDatabase && !existingGiftNames.has(normalizeGiftName(gift.name)),
+        )
+
+  if (giftsToInsert.length === 0) return existingGifts
 
   const { error } = await supabase
     .from('presentes')
-    .insert(defaultGifts.map((gift) => ({
+    .insert(giftsToInsert.map((gift) => ({
       nome: gift.name,
       descricao: gift.descricao ?? '',
       imagem_url: gift.imagem_url ?? '',
       disponivel: true,
+      position: gift.position ?? 0,
     })))
 
   if (error) throw error

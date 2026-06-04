@@ -18,6 +18,9 @@ import giftUmbrellaBasketImage from './assets/gift-umbrella-basket.jpeg'
 import giftLampImage from './assets/gift-lamp.jpeg'
 import giftUtensilHolderImage from './assets/gift-utensil-holder.jpeg'
 import giftMugRackImage from './assets/gift-mug-rack.jpeg'
+import giftChickenEggBasketFloralImage from './assets/gift-chicken-egg-basket-floral.jpg'
+import giftShellTableLampImage from './assets/gift-shell-table-lamp.jpg'
+import giftCeramicFloralBowlImage from './assets/gift-ceramic-floral-bowl.jpg'
 import {
   ReservedGiftError,
   ensureGiftCatalog,
@@ -102,10 +105,41 @@ const localGiftCatalog = [
     image: giftMugRackImage,
     position: 8,
   },
+  {
+    id: 'porta-ovos-galinha-floral',
+    name: 'Porta-ovos galinha floral',
+    storeUrl: 'https://lojaexemplo.com/porta-ovos-galinha-floral',
+    price: 'R$ 189,90',
+    image: giftChickenEggBasketFloralImage,
+    position: 9,
+    syncToDatabase: true,
+  },
+  {
+    id: 'abajur-concha-vintage',
+    name: 'Abajur concha vintage',
+    storeUrl: 'https://lojaexemplo.com/abajur-concha-vintage',
+    price: 'R$ 249,90',
+    image: giftShellTableLampImage,
+    position: 10,
+    syncToDatabase: true,
+  },
+  {
+    id: 'tigela-ceramica-floral',
+    name: 'Tigela ceramica floral',
+    storeUrl: 'https://lojaexemplo.com/tigela-ceramica-floral',
+    price: 'R$ 119,90',
+    image: giftCeramicFloralBowlImage,
+    position: 11,
+    syncToDatabase: true,
+  },
 ]
 
 const giftImageById = Object.fromEntries(
   localGiftCatalog.map((gift) => [gift.id, gift.image]),
+)
+
+const giftByName = Object.fromEntries(
+  localGiftCatalog.map((gift) => [gift.name.toLowerCase(), gift]),
 )
 
 const escapeHtml = (value) =>
@@ -737,21 +771,24 @@ function App() {
       const isAvailable =
         gift.disponivel === true ||
         gift.disponivel?.toString().trim().toLowerCase() === 'true'
+      const giftName = gift.name ?? gift.nome
+      const localGift = giftByName[giftName?.toLowerCase()]
 
       return {
         ...gift,
-        name: gift.name ?? gift.nome,
-        storeUrl: gift.storeUrl ?? gift.store_url ?? '#',
+        name: giftName,
+        storeUrl: gift.storeUrl ?? gift.store_url ?? localGift?.storeUrl ?? '#',
         price:
           typeof gift.price === 'string'
             ? gift.price
             : typeof gift.preco === 'string'
               ? gift.preco
-              : '',
+              : localGift?.price ?? '',
         status: isAvailable ? 'disponivel' : 'reservado',
         image:
           gift.image ??
           giftImageById[gift.id] ??
+          localGift?.image ??
           localGiftCatalog[index % localGiftCatalog.length]?.image,
       }
     })
@@ -794,12 +831,13 @@ function App() {
 
       try {
         const giftRecords = await ensureGiftCatalog(
-          localGiftCatalog.map(({ id, name, storeUrl, price, position }) => ({
+          localGiftCatalog.map(({ id, name, storeUrl, price, position, syncToDatabase }) => ({
             id,
             name,
             storeUrl,
             price,
             position,
+            syncToDatabase,
           })),
         )
 
